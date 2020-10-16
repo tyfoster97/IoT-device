@@ -27,16 +27,16 @@
 				</Compiler>
 			</Target>
 			<Environment>
-				<Variable name="MCU" value="" />
+				<Variable name="MCU" value="atmega328p" />
 			</Environment>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-mmcu=" />
+			<Add option="-mmcu=atmega328p" />
 			<Add option="-DF_CPU=16000000UL" />
 		</Compiler>
 		<Linker>
-			<Add option="-mmcu=" />
+			<Add option="-mmcu=atmega328p" />
 			<Add option="-Wl,-Map=$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).map,--cref" />
 		</Linker>
 		<ExtraCommands>
@@ -49,12 +49,11 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
-			<envvars />
 			<code_completion />
-			<lib_finder disable_auto="1" />
+			<envvars />
 			<debugger>
 				<remote_debugging target="Debug">
-					<options conn_type="0" serial_baud="115200" ip_address="127.0.0.1" ip_port="1212" additional_cmds="load" additional_shell_cmds_before='killall simulavr&#x0A;gnome-terminal --- /bin/sh -c &quot;stty erase 127 -isig -brkint -ignbrk -icanon -ctlecho -echo -inlcr; ~/simulavr/src/simulavr -g -E -x -F 16000000 -d atmega328 -f $(TARGET_OUTPUT_FILE)&quot; &amp;' />
+					<options conn_type="0" serial_baud="115200" ip_address="127.0.0.1" ip_port="1212" additional_cmds="load" additional_shell_cmds_before='killall simulavr&#x0A;gnome-terminal -- /bin/sh -c &quot;stty erase 127 -isig -brkint -ignbrk -icanon -ctlecho -echo -inclr; ~/simulavr/src/simulavr -g -E -x -F 16000000 -d atmega328 -f $(TARGET_OUTPUT_FILE)&quot; &amp;' />
 				</remote_debugging>
 			</debugger>
 		</Extensions>

@@ -76,5 +76,5 @@ void writestr(char *s) {
         uart_writechar(*s); //write char
         s++; //increment pointer
     }
-    //done
+    uart_writechar('\n'); //done
 }

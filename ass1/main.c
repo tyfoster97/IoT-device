@@ -16,9 +16,11 @@ int main(void)
     writestr("SER486--Homework Assignment 1");
     writestr("Ty Foster");
     char * char_size = getcharsize();
+    writestr(char_size);
     char * int_size = getintsize();
+    writestr(int_size);
     char * long_size = getlongsize();
-
+    writestr(long_size);
     //loop forever
     while(1)
     ;

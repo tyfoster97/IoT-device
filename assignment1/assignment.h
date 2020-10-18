@@ -1,6 +1,7 @@
 /**
  * @author Ty Foster
  * @version 2020.10.15
+ * SER486
  */
 
 #ifndef ASSIGNMENT_H

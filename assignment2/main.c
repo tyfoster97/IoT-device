@@ -5,6 +5,8 @@
  */
 
 #include <avr/io.h>
+#define DDRB (*(volatile char *) 0x24)
+#define PORTB (*(volatile char *) 0x25)
 
 void delay(unsigned int ms) {
     unsigned int i, j;
@@ -16,14 +18,14 @@ void delay(unsigned int ms) {
 
 int main(void)
 {
-    int *DDRB = 0x24; //pointer to DDRB
-    int *PORTB = 0x25; //pointer to PORTB
-    *DDRB |= 0x02; //initialize pin 1 as output
+    DDRB = 0x24; //pointer to DDRB
+    PORTB = 0x25; //pointer to PORTB
+    DDRB |= 0x02; //initialize pin 1 as output
 
     while(1) {
-        *PORTB |= 0x02; // toggle pin on
+        PORTB |= 0x02; // toggle pin on
         delay(2000); // wait 2s
-        *PORTB &= 0xFD; // toggle pin off
+        PORTB &= 0xFD; // toggle pin off
         delay(2000); // wait 2s
     }
 

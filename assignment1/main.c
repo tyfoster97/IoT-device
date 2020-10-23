@@ -31,46 +31,40 @@ int main(void)
 
 char * getcharsize(void) {
     switch(sizeof(char)) {
-        case 128:
-            return "char size = 128 bits";
-        case 64:
-            return "char size = 64 bits";
-        case 32:
+        case 4:
             return "char size = 32 bits";
-        case 16:
+        case 2:
             return "char size = 16 bits";
+        case 1:
+            return "char size = 8 bits";
         default:
-            return "char size = 8 bits"; //should always return this
+            return "undefined";
     }
 }
 
 char * getintsize(void) {
     switch(sizeof(int)) {
-        case 128:
-            return "int size = 128 bits";
-        case 64:
-            return "int size = 64 bits";
-        case 32:
+        case 4:
             return "int size = 32 bits";
-        case 16:
+        case 2:
             return "int size = 16 bits";
-        default:
+        case 1:
             return "int size = 8 bits";
+        default:
+            return "undefined";
     }
 }
 
 char * getlongsize(void) {
     switch(sizeof(long)) {
-        case 128:
-            return "long size = 128 bits";
-        case 64:
-            return "long size = 64 bits";
-        case 32:
+        case 4:
             return "long size = 32 bits";
-        case 16:
+        case 2:
             return "long size = 16 bits";
-        default:
+        case 1:
             return "long size = 8 bits";
+        default:
+            return "undefined";
     }
 }
 

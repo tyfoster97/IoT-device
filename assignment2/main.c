@@ -6,7 +6,7 @@
 
 #include <avr/io.h>
 
-void delay(unsigned long ms) {
+void delay(unsigned int ms) {
     //outer loop
         //inner loop
 }

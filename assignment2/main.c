@@ -14,10 +14,9 @@ void delay(unsigned int ms) {
     }
 }
 
-int main(void)
-{
-    int *DDRB = 0x24; //pointer to DDRB
-    int *PORTB = 0x25; //pointer to PORTB
+int main(void) {
+    volatile short unsigned int *DDRB = 0x24; //pointer to DDRB
+    volatile short unsigned int *PORTB = 0x25; //pointer to PORTB
     *DDRB |= 0x02; //initialize pin 1 as output
 
     while(1) {

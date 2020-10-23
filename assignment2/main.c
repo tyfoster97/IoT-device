@@ -7,24 +7,25 @@
 #include <avr/io.h>
 
 void delay(unsigned int ms) {
-    //outer loop
-        //inner loop
+    unsigned int i, j;
+    for(i = 1; i < ms; i++) {
+        for(j = 1; j < 10000; j++) {
+        }
+    }
 }
 
 int main(void)
 {
-    //pointer to DDRB
-    //pointer to PORTB
-    //pointer to PINB
-    //PORTB |= 0x02; //initialize pin 1 as output
+    int *DDRB = 0x24; //pointer to DDRB
+    int *PORTB = 0x25; //pointer to PORTB
+    *DDRB |= 0x02; //initialize pin 1 as output
 
-
-    while(1)
-        // toggle pin
-        // wait 2s
-        // toggle pin
-        // wait 2s
-    ;
+    while(1) {
+        *PORTB |= 0x02; // toggle pin on
+        delay(2000); // wait 2s
+        *PORTB &= 0xFD; // toggle pin off
+        delay(2000); // wait 2s
+    }
 
     return 0;
 }

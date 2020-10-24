@@ -1,0 +1,4 @@
+# depslib dependency file v1.0
+1603497907 source:/home/ty/ser486/assignment2/main.c
+	<avr/io.h>
+

@@ -5,13 +5,15 @@
  */
 
 #include <avr/io.h>
-#define DDRB (*((volatile char *) 0x24))
-#define PORTB (*((volatile char *) 0x25))
+//#define DDRB (*((volatile char *) 0x24))
+//#define PORTB (*((volatile char *) 0x25))
+#define SIM_TIME 35
+#define HARD_TIME 100
 
-void delay(unsigned int ms) {
-    unsigned int i, j;
+void delay(int ms) {
+    int i, j;
     for(i = 1; i < ms; i++) {
-        for(j = 1; j < 10000; j++) {
+        for(j = 1; j < SIM_TIME; j++) {
         }
     }
 }

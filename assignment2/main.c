@@ -9,10 +9,12 @@
 //#define PORTB (*((volatile char *) 0x25))
 
 void delay(int ms) {
-    unsigned int i, j;
-    for(i = 1; i < ms; i++) {
-        for(j=1; j < (60*15); j++) {}
-    }
+    TCNT1H = 0x85;
+    TCNT1L = 0xEE; //set timer
+    TCCR1A |= 0x00; //start timer
+    TCCR1B |= 0x05; //set timer to 1024 prescaler mode
+    while ((TIFR1 & (1 << TOV1 ) > 0);
+    TIFR1 &= ~(1 << TOV1); //reset overflow flag
 }
 
 int main(void)

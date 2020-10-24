@@ -95,10 +95,10 @@ void T1delay() {
   9e:	90 e0       	ldi	r25, 0x00	; 0
   a0:	fc 01       	movw	r30, r24
   a2:	10 82       	st	Z, r1
-    TCCR1B = 0x02; //set to 1024 prescaler in normal mode
+    TCCR1B = 0x06; //set to 1024 prescaler in normal mode
   a4:	81 e8       	ldi	r24, 0x81	; 129
   a6:	90 e0       	ldi	r25, 0x00	; 0
-  a8:	22 e0       	ldi	r18, 0x02	; 2
+  a8:	26 e0       	ldi	r18, 0x06	; 6
   aa:	fc 01       	movw	r30, r24
   ac:	20 83       	st	Z, r18
 

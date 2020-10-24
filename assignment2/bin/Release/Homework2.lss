@@ -69,7 +69,7 @@ Disassembly of section .text:
   86:	8e ee       	ldi	r24, 0xEE	; 238
   88:	80 93 84 00 	sts	0x0084, r24	; 0x800084 <__TEXT_REGION_LENGTH__+0x7e0084>
   8c:	10 92 80 00 	sts	0x0080, r1	; 0x800080 <__TEXT_REGION_LENGTH__+0x7e0080>
-  90:	82 e0       	ldi	r24, 0x02	; 2
+  90:	87 e0       	ldi	r24, 0x07	; 7
   92:	80 93 81 00 	sts	0x0081, r24	; 0x800081 <__TEXT_REGION_LENGTH__+0x7e0081>
   96:	b1 9b       	sbis	0x16, 1	; 22
   98:	fe cf       	rjmp	.-4      	; 0x96 <T1delay+0x16>

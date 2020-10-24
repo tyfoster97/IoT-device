@@ -8,13 +8,12 @@
 //#define DDRB (*((volatile char *) 0x24))
 //#define PORTB (*((volatile char *) 0x25))
 
-void delay(void) {
-    TCNT1H = 0x85;
-    TCNT1L = 0xEE; //set timer
-    TCCR1A = 0x00; //start timer
-    TCCR1B = 0x05; //set timer to 1024 prescaler mode
-    while ((TIFR1 & (1 << TOV1 )) > 0);
-    TIFR1 &= ~(1 << TOV1); //reset overflow flag
+void delay(unsigned int ms) {
+    unsigned int i, j;
+    for (i = 1; i < ms; i++) {
+        for (j = 1; j < 1000; j++) {
+        }
+    }
 }
 
 int main(void)
@@ -23,9 +22,9 @@ int main(void)
 
     while(1) {
         PORTB |= 0x02; // toggle pin on
-        delay(); // wait 2s
+        delay(2000); // wait 2s
         PORTB &= 0xFD; // toggle pin off
-        delay(); // wait 2s
+        delay(2000); // wait 2s
     }
 
     return 0;

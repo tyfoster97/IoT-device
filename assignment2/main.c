@@ -12,7 +12,7 @@ void T1delay() {
     TCNT1H = 0x85; //set Timer to 0x85EE
     TCNT1L = 0xEE;
     TCCR1A = 0x00;
-    TCCR1B = 0x02; //set to 1024 prescaler in normal mode
+    TCCR1B = 0x07; //set to 1024 prescaler in normal mode
 
     while ((TIFR1 & 0X02)==0);
     TCCR1B = 0;

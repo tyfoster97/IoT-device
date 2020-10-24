@@ -11,7 +11,7 @@
 void delay(int ms) {
     unsigned int i, j;
     for(i = 1; i < ms; i++) {
-        for(j=1; j < 60; j++) {}
+        for(j=1; j < (60*15); j++) {}
     }
 }
 

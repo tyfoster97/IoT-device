@@ -13,7 +13,7 @@ void delay(int ms) {
     TCNT1L = 0xEE; //set timer
     TCCR1A |= 0x00; //start timer
     TCCR1B |= 0x05; //set timer to 1024 prescaler mode
-    while ((TIFR1 & (1 << TOV1 ) > 0);
+    while ((TIFR1 & (1 << TOV1 )) > 0);
     TIFR1 &= ~(1 << TOV1); //reset overflow flag
 }
 

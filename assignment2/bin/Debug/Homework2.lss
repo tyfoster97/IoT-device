@@ -3,25 +3,25 @@ bin/Debug/Homework2.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  0000013a  000001ae  2**0
+  0 .data         00000000  00800100  0000012a  0000019e  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         0000013a  00000000  00000000  00000074  2**1
+  1 .text         0000012a  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .stab         00000894  00000000  00000000  000001b0  2**2
+  2 .stab         00000870  00000000  00000000  000001a0  2**2
                   CONTENTS, READONLY, DEBUGGING
-  3 .stabstr      0000126d  00000000  00000000  00000a44  2**0
+  3 .stabstr      00001255  00000000  00000000  00000a10  2**0
                   CONTENTS, READONLY, DEBUGGING
-  4 .comment      00000011  00000000  00000000  00001cb1  2**0
+  4 .comment      00000011  00000000  00000000  00001c65  2**0
                   CONTENTS, READONLY
-  5 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00001cc4  2**2
+  5 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00001c78  2**2
                   CONTENTS, READONLY
-  6 .debug_info   000005f4  00000000  00000000  00001d04  2**0
+  6 .debug_info   000005f4  00000000  00000000  00001cb8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000005a2  00000000  00000000  000022f8  2**0
+  7 .debug_abbrev 000005a2  00000000  00000000  000022ac  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000001a  00000000  00000000  0000289a  2**0
+  8 .debug_line   0000001a  00000000  00000000  0000284e  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00000208  00000000  00000000  000028b4  2**0
+  9 .debug_str    00000208  00000000  00000000  00002868  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -61,137 +61,125 @@ Disassembly of section .text:
   6e:	d8 e0       	ldi	r29, 0x08	; 8
   70:	de bf       	out	0x3e, r29	; 62
   72:	cd bf       	out	0x3d, r28	; 61
-  74:	0e 94 73 00 	call	0xe6	; 0xe6 <main>
-  78:	0c 94 9b 00 	jmp	0x136	; 0x136 <_exit>
+  74:	0e 94 6f 00 	call	0xde	; 0xde <main>
+  78:	0c 94 93 00 	jmp	0x126	; 0x126 <_exit>
 
 0000007c <__bad_interrupt>:
   7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
-00000080 <delay>:
+00000080 <T1delay>:
+
+#include <avr/io.h>
 //#define DDRB (*((volatile char *) 0x24))
 //#define PORTB (*((volatile char *) 0x25))
-#define SIM_TIME 35
-#define HARD_TIME 100
 
-void delay(int ms) {
+void T1delay() {
   80:	cf 93       	push	r28
   82:	df 93       	push	r29
-  84:	00 d0       	rcall	.+0      	; 0x86 <delay+0x6>
-  86:	00 d0       	rcall	.+0      	; 0x88 <delay+0x8>
-  88:	00 d0       	rcall	.+0      	; 0x8a <delay+0xa>
-  8a:	cd b7       	in	r28, 0x3d	; 61
-  8c:	de b7       	in	r29, 0x3e	; 62
-  8e:	9e 83       	std	Y+6, r25	; 0x06
-  90:	8d 83       	std	Y+5, r24	; 0x05
-    int i, j;
-    for(i = 1; i < ms; i++) {
-  92:	81 e0       	ldi	r24, 0x01	; 1
+  84:	cd b7       	in	r28, 0x3d	; 61
+  86:	de b7       	in	r29, 0x3e	; 62
+    TCNT1H = 0x85; //set Timer to 0x85EE
+  88:	85 e8       	ldi	r24, 0x85	; 133
+  8a:	90 e0       	ldi	r25, 0x00	; 0
+  8c:	25 e8       	ldi	r18, 0x85	; 133
+  8e:	fc 01       	movw	r30, r24
+  90:	20 83       	st	Z, r18
+    TCNT1L = 0xEE;
+  92:	84 e8       	ldi	r24, 0x84	; 132
   94:	90 e0       	ldi	r25, 0x00	; 0
-  96:	9a 83       	std	Y+2, r25	; 0x02
-  98:	89 83       	std	Y+1, r24	; 0x01
-  9a:	14 c0       	rjmp	.+40     	; 0xc4 <delay+0x44>
-        for(j = 1; j < HARD_TIME; j++) {
-  9c:	81 e0       	ldi	r24, 0x01	; 1
+  96:	2e ee       	ldi	r18, 0xEE	; 238
+  98:	fc 01       	movw	r30, r24
+  9a:	20 83       	st	Z, r18
+    TCCR1A = 0x00;
+  9c:	80 e8       	ldi	r24, 0x80	; 128
   9e:	90 e0       	ldi	r25, 0x00	; 0
-  a0:	9c 83       	std	Y+4, r25	; 0x04
-  a2:	8b 83       	std	Y+3, r24	; 0x03
-  a4:	05 c0       	rjmp	.+10     	; 0xb0 <delay+0x30>
-  a6:	8b 81       	ldd	r24, Y+3	; 0x03
-  a8:	9c 81       	ldd	r25, Y+4	; 0x04
-  aa:	01 96       	adiw	r24, 0x01	; 1
-  ac:	9c 83       	std	Y+4, r25	; 0x04
-  ae:	8b 83       	std	Y+3, r24	; 0x03
-  b0:	8b 81       	ldd	r24, Y+3	; 0x03
-  b2:	9c 81       	ldd	r25, Y+4	; 0x04
-  b4:	84 36       	cpi	r24, 0x64	; 100
-  b6:	91 05       	cpc	r25, r1
-  b8:	b4 f3       	brlt	.-20     	; 0xa6 <delay+0x26>
-#define SIM_TIME 35
-#define HARD_TIME 100
+  a0:	fc 01       	movw	r30, r24
+  a2:	10 82       	st	Z, r1
+    TCCR1B = 0x02; //set to 1024 prescaler in normal mode
+  a4:	81 e8       	ldi	r24, 0x81	; 129
+  a6:	90 e0       	ldi	r25, 0x00	; 0
+  a8:	22 e0       	ldi	r18, 0x02	; 2
+  aa:	fc 01       	movw	r30, r24
+  ac:	20 83       	st	Z, r18
 
-void delay(int ms) {
-    int i, j;
-    for(i = 1; i < ms; i++) {
-  ba:	89 81       	ldd	r24, Y+1	; 0x01
-  bc:	9a 81       	ldd	r25, Y+2	; 0x02
-  be:	01 96       	adiw	r24, 0x01	; 1
-  c0:	9a 83       	std	Y+2, r25	; 0x02
-  c2:	89 83       	std	Y+1, r24	; 0x01
-  c4:	29 81       	ldd	r18, Y+1	; 0x01
-  c6:	3a 81       	ldd	r19, Y+2	; 0x02
-  c8:	8d 81       	ldd	r24, Y+5	; 0x05
-  ca:	9e 81       	ldd	r25, Y+6	; 0x06
-  cc:	28 17       	cp	r18, r24
-  ce:	39 07       	cpc	r19, r25
-  d0:	2c f3       	brlt	.-54     	; 0x9c <delay+0x1c>
-        for(j = 1; j < HARD_TIME; j++) {
-        }
-    }
+    while ((TIFR1 & 0X02)==0);
+  ae:	00 00       	nop
+  b0:	86 e3       	ldi	r24, 0x36	; 54
+  b2:	90 e0       	ldi	r25, 0x00	; 0
+  b4:	fc 01       	movw	r30, r24
+  b6:	80 81       	ld	r24, Z
+  b8:	88 2f       	mov	r24, r24
+  ba:	90 e0       	ldi	r25, 0x00	; 0
+  bc:	82 70       	andi	r24, 0x02	; 2
+  be:	99 27       	eor	r25, r25
+  c0:	89 2b       	or	r24, r25
+  c2:	b1 f3       	breq	.-20     	; 0xb0 <T1delay+0x30>
+    TCCR1B = 0;
+  c4:	81 e8       	ldi	r24, 0x81	; 129
+  c6:	90 e0       	ldi	r25, 0x00	; 0
+  c8:	fc 01       	movw	r30, r24
+  ca:	10 82       	st	Z, r1
+    TIFR1 = 0x04;
+  cc:	86 e3       	ldi	r24, 0x36	; 54
+  ce:	90 e0       	ldi	r25, 0x00	; 0
+  d0:	24 e0       	ldi	r18, 0x04	; 4
+  d2:	fc 01       	movw	r30, r24
+  d4:	20 83       	st	Z, r18
 }
-  d2:	00 00       	nop
-  d4:	26 96       	adiw	r28, 0x06	; 6
-  d6:	0f b6       	in	r0, 0x3f	; 63
-  d8:	f8 94       	cli
-  da:	de bf       	out	0x3e, r29	; 62
-  dc:	0f be       	out	0x3f, r0	; 63
-  de:	cd bf       	out	0x3d, r28	; 61
-  e0:	df 91       	pop	r29
-  e2:	cf 91       	pop	r28
-  e4:	08 95       	ret
+  d6:	00 00       	nop
+  d8:	df 91       	pop	r29
+  da:	cf 91       	pop	r28
+  dc:	08 95       	ret
 
-000000e6 <main>:
+000000de <main>:
 
 int main(void)
 {
-  e6:	cf 93       	push	r28
-  e8:	df 93       	push	r29
-  ea:	cd b7       	in	r28, 0x3d	; 61
-  ec:	de b7       	in	r29, 0x3e	; 62
+  de:	cf 93       	push	r28
+  e0:	df 93       	push	r29
+  e2:	cd b7       	in	r28, 0x3d	; 61
+  e4:	de b7       	in	r29, 0x3e	; 62
     DDRB |= 0x02; //initialize pin 1 as output
-  ee:	84 e2       	ldi	r24, 0x24	; 36
-  f0:	90 e0       	ldi	r25, 0x00	; 0
-  f2:	24 e2       	ldi	r18, 0x24	; 36
-  f4:	30 e0       	ldi	r19, 0x00	; 0
-  f6:	f9 01       	movw	r30, r18
-  f8:	20 81       	ld	r18, Z
-  fa:	22 60       	ori	r18, 0x02	; 2
-  fc:	fc 01       	movw	r30, r24
-  fe:	20 83       	st	Z, r18
+  e6:	84 e2       	ldi	r24, 0x24	; 36
+  e8:	90 e0       	ldi	r25, 0x00	; 0
+  ea:	24 e2       	ldi	r18, 0x24	; 36
+  ec:	30 e0       	ldi	r19, 0x00	; 0
+  ee:	f9 01       	movw	r30, r18
+  f0:	20 81       	ld	r18, Z
+  f2:	22 60       	ori	r18, 0x02	; 2
+  f4:	fc 01       	movw	r30, r24
+  f6:	20 83       	st	Z, r18
 
     while(1) {
         PORTB |= 0x02; // toggle pin on
- 100:	85 e2       	ldi	r24, 0x25	; 37
- 102:	90 e0       	ldi	r25, 0x00	; 0
- 104:	25 e2       	ldi	r18, 0x25	; 37
- 106:	30 e0       	ldi	r19, 0x00	; 0
- 108:	f9 01       	movw	r30, r18
- 10a:	20 81       	ld	r18, Z
- 10c:	22 60       	ori	r18, 0x02	; 2
- 10e:	fc 01       	movw	r30, r24
- 110:	20 83       	st	Z, r18
-        delay(2000); // wait 2s
- 112:	80 ed       	ldi	r24, 0xD0	; 208
- 114:	97 e0       	ldi	r25, 0x07	; 7
- 116:	0e 94 40 00 	call	0x80	; 0x80 <delay>
+  f8:	85 e2       	ldi	r24, 0x25	; 37
+  fa:	90 e0       	ldi	r25, 0x00	; 0
+  fc:	25 e2       	ldi	r18, 0x25	; 37
+  fe:	30 e0       	ldi	r19, 0x00	; 0
+ 100:	f9 01       	movw	r30, r18
+ 102:	20 81       	ld	r18, Z
+ 104:	22 60       	ori	r18, 0x02	; 2
+ 106:	fc 01       	movw	r30, r24
+ 108:	20 83       	st	Z, r18
+        T1delay(); // wait 2s
+ 10a:	0e 94 40 00 	call	0x80	; 0x80 <T1delay>
         PORTB &= 0xFD; // toggle pin off
- 11a:	85 e2       	ldi	r24, 0x25	; 37
- 11c:	90 e0       	ldi	r25, 0x00	; 0
- 11e:	25 e2       	ldi	r18, 0x25	; 37
- 120:	30 e0       	ldi	r19, 0x00	; 0
- 122:	f9 01       	movw	r30, r18
- 124:	20 81       	ld	r18, Z
- 126:	2d 7f       	andi	r18, 0xFD	; 253
- 128:	fc 01       	movw	r30, r24
- 12a:	20 83       	st	Z, r18
-        delay(2000); // wait 2s
- 12c:	80 ed       	ldi	r24, 0xD0	; 208
- 12e:	97 e0       	ldi	r25, 0x07	; 7
- 130:	0e 94 40 00 	call	0x80	; 0x80 <delay>
+ 10e:	85 e2       	ldi	r24, 0x25	; 37
+ 110:	90 e0       	ldi	r25, 0x00	; 0
+ 112:	25 e2       	ldi	r18, 0x25	; 37
+ 114:	30 e0       	ldi	r19, 0x00	; 0
+ 116:	f9 01       	movw	r30, r18
+ 118:	20 81       	ld	r18, Z
+ 11a:	2d 7f       	andi	r18, 0xFD	; 253
+ 11c:	fc 01       	movw	r30, r24
+ 11e:	20 83       	st	Z, r18
+        T1delay(); // wait 2s
+ 120:	0e 94 40 00 	call	0x80	; 0x80 <T1delay>
     }
- 134:	e5 cf       	rjmp	.-54     	; 0x100 <main+0x1a>
+ 124:	e9 cf       	rjmp	.-46     	; 0xf8 <main+0x1a>
 
-00000136 <_exit>:
- 136:	f8 94       	cli
+00000126 <_exit>:
+ 126:	f8 94       	cli
 
-00000138 <__stop_program>:
- 138:	ff cf       	rjmp	.-2      	; 0x138 <__stop_program>
+00000128 <__stop_program>:
+ 128:	ff cf       	rjmp	.-2      	; 0x128 <__stop_program>

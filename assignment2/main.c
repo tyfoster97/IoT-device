@@ -13,7 +13,7 @@
 void delay(int ms) {
     int i, j;
     for(i = 1; i < ms; i++) {
-        for(j = 1; j < SIM_TIME; j++) {
+        for(j = 1; j < HARD_TIME; j++) {
         }
     }
 }

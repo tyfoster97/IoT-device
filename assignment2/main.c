@@ -9,10 +9,10 @@
 //#define PORTB (*((volatile char *) 0x25))
 
 void T1delay() {
+    TCCR1A = 0x00;
+    TCCR1B = 0x07; //set to 1024 prescaler in normal mode
     TCNT1H = 0x85; //set Timer to 0x85EE
     TCNT1L = 0xEE;
-    TCCR1A = 0x00;
-    TCCR1B = 0x14; //set to 1024 prescaler in normal mode
 
     while ((TIFR1 & 0X02)==0);
     TCCR1B = 0;

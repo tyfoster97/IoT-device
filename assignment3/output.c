@@ -191,7 +191,7 @@ void writehex4(unsigned char num) {
 }
 
 /* macro definitions used by writehex8 and writehex 16 */
-#define BASE 0x10
+#define HEX_BASE 0x10
 
 /**********************************
  * writehex8(unsigned char num)
@@ -213,14 +213,14 @@ void writehex4(unsigned char num) {
  * NOTE: uart_init() should be called this function
  *   is invoked for the first time or unpredictable
  *   UART behavior may result.
- * 
+ *
  * NOTE: range of accepted values is 0x00 to 0xFF,
  *   inclusive.
  */
 void writehex8(unsigned char num)
 {
-    writehex4(num / BASE); //write first digit
-    writehex4(num % BASE); //write second digit
+    writehex4(num / HEX_BASE); //write first digit
+    writehex4(num % HEX_BASE); //write second digit
 }
 
 /**********************************
@@ -237,7 +237,7 @@ void writehex8(unsigned char num)
  *   nothing
  *
  * changes:
- *   the state of the uart transmit buffer will be 
+ *   the state of the uart transmit buffer will be
  *   changed by this function.
  *
  * NOTE: uart_init() should be called this function
@@ -248,15 +248,23 @@ void writehex8(unsigned char num)
  */
 void writehex16(unsigned int num)
 {
-    writehex8((char) (num / (BASE * BASE))); //print left 2 hex digits
-    writehex8((char) (num % (BASE * BASE))); //print right 2 hex digits
+    writehex8((unsigned char) (num / (HEX_BASE * HEX_BASE))); //print left 2 hex digits
+    writehex8((unsigned char) (num % (HEX_BASE * HEX_BASE))); //print right 2 hex digits
 }
 
 /* macro definitions used by blink_led */
-#define DASH 750
-#define DOT 250
-#define OFF 100
-#define SPACE 1000
+#ifdef RELEASE
+    #define DASH 750
+    #define DOT 250
+    #define OFF 100
+    #define SPACE 1000
+#else
+    #define DASH 75
+    #define DOT 25
+    #define OFF 10
+    #define SPACE 100
+#endif
+
 #define PINB (*((volatile char *) 0x023))
 
 /**********************************

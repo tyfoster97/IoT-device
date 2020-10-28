@@ -4,7 +4,7 @@
  * SER486 Assignment 3
  * Fall 2020
  * Written By:  Ty Foster (student)
- * Modified By: 
+ * Modified By:
  *
  * this file implements the main function for assignment
  * 3 which calls the methods implemented for the assignment
@@ -21,6 +21,7 @@
 #include "hw4lib.h"
 #include "output.h"
 
+//#define PINB (*((volatile char*) 0x23))
 #define DDRB (*((volatile char *) 0x24))
 //#define PORTB (*((volatile char *) 0x25))
 
@@ -50,7 +51,7 @@ int main(void)
     /* initialization */
     DDRB |= 0x02; // set PORTB1 as output
     uart_init(); // initialize uart
-    
+
     /* output strings to console */
     writestr("SER486 HW3 -- Ty Foster\n\r");
     writehex8(0x0A); //write 0x0A to console
@@ -58,8 +59,8 @@ int main(void)
     writehex16(0xC0DE); //write 0xC0DE to console
     writestr("\n\r"); //new line
 
-    while(1) {
-        /* blink led to signal code execution complete */
-        blink_led("--- -.-"); //blink "ok" in morse code
-    }
+    /* blink led to signal code execution complete */
+    blink_led("--- -.-"); //blink "ok" in morse code
+
+    while(1);
 }

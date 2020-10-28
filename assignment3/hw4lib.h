@@ -2,7 +2,7 @@
     uart.h
 
     this header file includes function declarations for the SER486
-    Homework assignment 2
+    Homework assignment 3
  */
 
 #ifndef _UART_H

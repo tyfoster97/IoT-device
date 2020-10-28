@@ -1,10 +1,10 @@
 /********************************************************
  * output.c
  *
- * SER486 Assignment 4
- * Spring 2018
+ * SER486 Assignment 3
+ * Fall 2020
  * Written By:  Doug Sandy (instructor)
- * Modified By:
+ * Modified By: Ty Foster (student)
  *
  * this file implements functions associated with SER486
  * homework assignment 4.  The procedures implemented

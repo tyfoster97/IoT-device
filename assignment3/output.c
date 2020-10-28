@@ -112,21 +112,196 @@ void writestr(char * str)
 * STUDENT CODE BELOW THIS POINT
 *************************************************************/
 
-/* Student-provided function comments go here */
+/**********************************
+ * writehex4(unsigned char num)
+ *
+ * This code writes an individual hex digit
+ *   to the UART as an ascii character
+ *
+ * arguments:
+ *   num - the hex digit to convert to ascii
+ *         and print on the UART.
+ *
+ * returns:
+ *   nothing
+ *
+ * changes:
+ *   the sate of the uart transmit buffer will be
+ *   changed by this function.
+ *
+ * NOTE: uart_init() should be called this function
+ *   is invoked for the first time or unpredictable
+ *   UART behavior may result.
+ * NOTE: accepted range of values 0x0 to 0xF, inclusive.
+ */
+void writehex4(unsigned char num) {
+    switch(num) {
+        case 0x00:
+            uart_writechar('0');
+            break;
+        case 0x01:
+            uart_writechar('1');
+            break;
+        case 0x02:
+            uart_writechar('2');
+            break;
+        case 0x03:
+            uart_writechar('3');
+            break;
+        case 0x04:
+            uart_writechar('4');
+            break;
+        case 0x05:
+            uart_writechar('5');
+            break;
+        case 0x06:
+            uart_writechar('6');
+            break;
+        case 0x07:
+            uart_writechar('7');
+            break;
+        case 0x08:
+            uart_writechar('8');
+            break;
+        case 0x09:
+            uart_writechar('9');
+            break;
+        case 0x0A:
+            uart_writechar('A');
+            break;
+        case 0x0B:
+            uart_writechar('B');
+            break;
+        case 0x0C:
+            uart_writechar('C');
+            break;
+        case 0x0D:
+            uart_writechar('D');
+            break;
+        case 0x0E:
+            uart_writechar('E');
+            break;
+        case 0x0F:
+            uart_writechar('F');
+            break;
+        default:
+            writestr("invalid input");
+            break;
+    }
+}
+
+/* macro definitions used by writehex8 and writehex 16 */
+#define BASE 0x10
+
+/**********************************
+ * writehex8(unsigned char num)
+ *
+ * This code writes the hexidecimal digits of a
+ *   number as ascii characters to the UART
+ *
+ * arguments:
+ *   num - an 8 bit number to be printed to the
+ *         UART.
+ *
+ * returns:
+ *   nothing
+ *
+ * changes:
+ *   the state of the uart transmit buffer will be
+ *   changed by this function.
+ *
+ * NOTE: uart_init() should be called this function
+ *   is invoked for the first time or unpredictable
+ *   UART behavior may result.
+ * 
+ * NOTE: range of accepted values is 0x00 to 0xFF,
+ *   inclusive.
+ */
 void writehex8(unsigned char num)
 {
-    /* student-provided implementatino code goes here */
+    writehex4(num / BASE); //write first digit
+    writehex4(num % BASE); //write second digit
 }
 
-/* Student-provided function comments go here */
+/**********************************
+ * writehex16(unsigned int num)
+ *
+ * This code writes the hexidecimal digits of a 16
+ *   bit number to the UART as ascii characers.
+ *
+ * arguments:
+ *   num - 16 bit integer to be printed in hexidecimal
+ *         as ascii characters to the UART.
+ *
+ * returns:
+ *   nothing
+ *
+ * changes:
+ *   the state of the uart transmit buffer will be 
+ *   changed by this function.
+ *
+ * NOTE: uart_init() should be called this function
+ *   is invoked for the first time or unpredictable
+ *   UART behavior may result.
+ * NOTE: range of accepted values is 0x0000 to 0xFFFF,
+ *   inclusive
+ */
 void writehex16(unsigned int num)
 {
-    /* student-provided implementatino code goes here */
-
+    writehex8((char) (num / (BASE * BASE))); //print left 2 hex digits
+    writehex8((char) (num % (BASE * BASE))); //print right 2 hex digits
 }
 
-/* Student-provided function comments go here */
+/* macro definitions used by blink_led */
+#define DASH 750
+#define DOT 250
+#define OFF 100
+#define SPACE 1000
+#define PORTB (*((volatile char *) 0x025))
+
+/**********************************
+ * blink_led(char * msg)
+ *
+ * This code causes the LED to blink a morse
+ *   code message.
+ *
+ * arguments:
+ *   msg - the morse code message to be transmitted
+ *         by the LED.
+ *
+ * returns:
+ *   nothing
+ *
+ * changes:
+ *   The state of the LED from on to off and vice
+ *   versa will be changed by this function.
+ *
+ * NOTE: PORTB pin 1 should be set to output before
+ *   calling this function.
+ */
 void blink_led(char *msg)
 {
     /* student-provided implementatino code goes here */
+    unsigned int i;
+    for (i=0; msg[i]!='\0'; i++) {
+        switch(msg[i]) {
+            case '-':
+                PORTB = 0x02; //on for DASH
+                delay(DASH);
+                PORTB = 0x02; //off
+                delay(OFF);
+                break;
+            case '.':
+                PORTB = 0x02; //on for DOT
+                delay(DOT);
+                PORTB = 0x02; //off
+                delay(OFF);
+                break;
+            case ' ':
+                delay(SPACE); //off for SPACE
+                break;
+            default:
+                break; //do nothing
+        }
+    }
 }

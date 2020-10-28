@@ -54,7 +54,9 @@ int main(void)
     /* output strings to console */
     writestr("SER486 HW3 -- Ty Foster\n\r");
     writehex8(0x0A); //write 0x0A to console
+    writestr("\n\r"); //new line
     writehex16(0xC0DE); //write 0xC0DE to console
+    writestr("\n\r"); //new line
 
     while(1)
         /* blink led to signal code execution complete */

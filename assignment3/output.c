@@ -257,7 +257,32 @@ void writehex16(unsigned int num)
 #define DOT 250
 #define OFF 100
 #define SPACE 1000
-#define PORTB (*((volatile char *) 0x025))
+#define PINB (*((volatile char *) 0x023))
+
+/**********************************
+ * blink(unsigned int t)
+ *
+ * This code changes the LED state from on/off to
+ *   off/on for t milliseconds.
+ *
+ * arguments:
+ *   t   - the time for the LED to be in the
+ *         on or off state state.
+ *
+ * returns:
+ *   nothing
+ *
+ * changes:
+ *   The state of the LED from on to off or vice
+ *   versa will be changed by this function.
+ *
+ * NOTE: PORTB pin 1 should be set to output before
+ *   calling this function.
+ */
+void blink(unsigned int t) {
+    PINB = 0x02;
+    delay(t);
+}
 
 /**********************************
  * blink_led(char * msg)
@@ -278,6 +303,8 @@ void writehex16(unsigned int num)
  *
  * NOTE: PORTB pin 1 should be set to output before
  *   calling this function.
+ * NOTE: Assumes LED is in the off state when function
+ *   is called
  */
 void blink_led(char *msg)
 {
@@ -286,16 +313,12 @@ void blink_led(char *msg)
     for (i=0; msg[i]!='\0'; i++) {
         switch(msg[i]) {
             case '-':
-                PORTB = 0x02; //on for DASH
-                delay(DASH);
-                PORTB = 0x02; //off
-                delay(OFF);
+                blink(DASH);
+                blink(OFF);
                 break;
             case '.':
-                PORTB = 0x02; //on for DOT
-                delay(DOT);
-                PORTB = 0x02; //off
-                delay(OFF);
+                blink(DOT);
+                blink(OFF);
                 break;
             case ' ':
                 delay(SPACE); //off for SPACE
@@ -304,4 +327,5 @@ void blink_led(char *msg)
                 break; //do nothing
         }
     }
+    delay(SPACE+SPACE);
 }

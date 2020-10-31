@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1604101723 source:/home/ty/ser486/assignment3/main.c
+	"hw4lib.h"
+	"output.h"
+
+1604101723 /home/ty/ser486/assignment3/hw4lib.h
+
+1604101723 /home/ty/ser486/assignment3/output.h
+
+1604101723 source:/home/ty/ser486/assignment3/output.c
+	"hw4lib.h"
+

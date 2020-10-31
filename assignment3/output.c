@@ -16,6 +16,11 @@
  *                        null-terminated string to the
  *                        avr atmega 328P uart port.
  *                        (instructor provided)
+ * 
+ *    writehex4(unsigned char) - a fucntino to write the
+ *                        hexadecimal representation of
+ *                        an 8-bit unsigned integer to
+ *                        avr atmega 328P uart port.
  *
  *    writehex8(unsigned char) - a function to write the
  *                        hexadecimal representation of
@@ -26,6 +31,11 @@
  *                        hexadecimal representation of
  *                        a 16-bit unsigned integer to
  *                        avr atmega 328P uart port.
+ * 
+ *    blink(unsigned int) - a function to flip the state
+ *                        of the user-programmable LED
+ *                        for the specified amount of
+ *                        milliseconds.
  *
  *    blink_led(char *) - a function to send a specific
  *                        blink pattern to the development

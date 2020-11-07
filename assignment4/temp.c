@@ -12,6 +12,21 @@
  *
  * Copyright(C) 2020, Arizona State University
  * All rights reserved
+ * 
+ * functions are:
+ *      temp_init(void) - a function to initialize the ADC 
+ *                      to convert the analog temperature
+ *                      to a digital output
+ * 
+ *      temp_is_data_ready(void) - a function to check if
+ *                      the ADC has finished converting the
+ *                      value from the temperature sensor
+ * 
+ *      temp_start(void) - a function to start the conversion
+ *                      of the sensor reading by the ADC
+ * 
+ *      temp_get(void)  - a function to get the value from
+ *                      the ADC data registers
  */
 
 #include "temp.h"

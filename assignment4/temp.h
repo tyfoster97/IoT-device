@@ -14,7 +14,12 @@
  * All rights reserved
  */
 
+#ifndef TEMP_H_INCLUDED
+#define TEMP_H_INCLUDED
+
 void temp_init(); /* initializes the temperature device */
 int temp_is_data_ready(); /* checks if the most recent conversion is complete */
 void temp_start(); /* starts conversion */
 signed int temp_get(); /* reads value from most recent conversion */
+
+#endif

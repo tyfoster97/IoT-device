@@ -34,12 +34,10 @@ int main(void)
     uart_writestr("SER 486 HW4 -- Ty Foster\n\r");
     /* infinite loop to check temp*/
     while(1) {
-        led_on();
         temp_start(); /* start conversion */
         while (!temp_is_data_ready()); /* wait for conversion */
         uart_writedec32(temp_get()); /* print value */
         uart_writestr("\n\r");
-        led_off();
         delay(TEMP_DELAY); /* wait one second */
     }
 }

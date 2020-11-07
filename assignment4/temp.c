@@ -113,15 +113,12 @@ void temp_start() {
  *   nothing
  */
 signed long temp_get() {
-    /* initialize variables */
-    signed long degrees = 0;
-    signed long reading = 0;
     /* get reading */
     signed long r_lo = ADCL;
     signed long r_hi = ADCH << H_SHIFT;
-    reading = r_hi | r_lo;
+    signed long reading = r_hi | r_lo;
     /* convert reading to temperature */
-    degrees = ((reading * 101) / 100) - 273;
+    signed long degrees = ((reading * 101) / 100) - 273;
     /* return result */
     return degrees;
 }

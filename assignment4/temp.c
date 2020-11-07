@@ -46,7 +46,7 @@ void temp_init() {
     /* enable ADC */
     ADCSRA &= 0x80;
     /* set ref voltage to 1.1V and temp sensor as input */
-    ADMUX &= 0xC8;
+    ADMUX = 0xC8;
 }
 
 /**********************************
@@ -112,13 +112,13 @@ void temp_start() {
  * changes:
  *   nothing
  */
-signed int temp_get() {
+signed long temp_get() {
     /* initialize variables */
-    signed int degrees = 0;
-    signed int reading = 0;
+    signed long degrees = 0;
+    signed long reading = 0;
     /* get reading */
-    signed int r_lo = ADCL;
-    signed int r_hi = ADCH << H_SHIFT;
+    signed long r_lo = ADCL;
+    signed long r_hi = ADCH << H_SHIFT;
     reading = r_hi | r_lo;
     /* convert reading to temperature */
     degrees = ((reading * 101) / 100) - 273;

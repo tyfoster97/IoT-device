@@ -54,7 +54,7 @@
 			<lib_finder disable_auto="1" />
 			<debugger>
 				<remote_debugging target="Debug">
-					<options conn_type="0" serial_baud="115200" ip_address="127.0.0.1" ip_port="1212" additional_cmds="load" additional_shell_cmds_before='killall simulavr&#x0A;gnome-terminal -- /bin/sh -c &quot;stty erase 127 -isig -brkint -ignbrk -canon -ctlecho -echo -inlcr; ~/simulavr/src/smulavr -g -E -x -F 16000000 -d atmega328 -f $(TARGET_OUTPUT_FILE)&quot; &amp;' />
+					<options conn_type="0" serial_baud="115200" ip_address="127.0.0.1" ip_port="1212" additional_cmds="load" additional_shell_cmds_before='killall simulavr&#x0A;gnome-terminal -- /bin/sh -c &quot;stty erase 127 -isig -brkint -ignbrk -icanon -ctlecho -echo -inlcr; ~/simulavr/src/smulavr -g -E -x -F 16000000 -d atmega328 -f $(TARGET_OUTPUT_FILE)&quot; &amp;' />
 				</remote_debugging>
 			</debugger>
 		</Extensions>

@@ -15,6 +15,12 @@
  *    main(void) - a function to execute the code for the
  *                        assignment.
  */
+#include "delay.h"
+#include "led.h"
+#include "rtc.h"
+#include "timer1.h"
+#include "uart.h"
+
 
 int main(void)
 {

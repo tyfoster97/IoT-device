@@ -24,11 +24,37 @@
 
 int main(void)
 {
+    /* initialize uart, led, and rtc */
+    uart_init();
+    led_init();
+    rtc_init();
 
-    // Insert code
+    /* initialize led patter to "--- -.-" */
+    led_set_blink("--- -.-");
 
-    while(1)
-    ;
+    /* initialize rtc date/time to 01/01/2019 00:00:00 */
+    rtc_set_by_datestr("01/01/2019 00:00:00");
 
-    return 0;
+    /* print console header */
+    uart_writestr("SER 486 Project 1 -- Ty Foster\n\r");
+
+    /* get baseline performance */
+    signed long c1 = 0;
+    delay_set(1, 10000); while (!delay_isdone(1)) { c1++; }
+
+    /* measure performance with led_update */
+    signed long c2 = 0;
+    delay_set(1, 10000); while (!delay_isdone(1)) { led_update(); c2++; }
+
+    /* display results */
+    uart_writedec32(c1); uart_writestr(" ");
+    uart_writedec32(c2); uart_writestr("\n\r");
+
+    while(1) {
+        /* update led blink FSM */
+
+        /* display rtc date string every 500ms (instance 1 of delay) */
+
+        /* send carriage return */
+    }
 }

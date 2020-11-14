@@ -20,6 +20,8 @@
  *      update(void) - called in main control loop to
  *                      update the state of the LED FSM
  */
+#include "delay.h"
+#include "led.h"
 
 /* ATTRIBUTES */
 #define PORTB (*((volatile char *) 0x25))

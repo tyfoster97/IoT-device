@@ -31,8 +31,6 @@
  *                       limit is reached.
  */
 
-#include "delay.h"
-
 /* ATTRIBUTES */
 unsigned int count[] = {0, 0};
 unsigned int limit[] = {0xFF, 0xFF};

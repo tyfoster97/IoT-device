@@ -25,31 +25,38 @@
 
 /* METHODS */
 /**********************************
- * __vector_14(void)
+ * set_blink(char * msg)
  *
- * This code increments each instance's
- *  count by 1 after 1ms until the limit
- *  for the instance is reached.
+ * Sets the blink pattern to a new
+ *  message, clears the blink FSM.
  *
  * arguments:
- *   nothing
+ *   msg - pointer to char array to
+ *      use as the message
  *
  * returns:
  *   nothing
  *
  * changes:
- *   count array changed
+ *   FSM for LED
+ *   sets LED to off state
  */
 void set_blink(char * msg) {
+    /* blink_msg = msg */
 
+    /* blink_pos = 0 */
+
+    /* blink_state = PHASE1 */
+
+    /* delay_set(0,0) */
+
+    /* led_off */
 }
 
 /**********************************
- * __vector_14(void)
+ * update(void)
  *
- * This code increments each instance's
- *  count by 1 after 1ms until the limit
- *  for the instance is reached.
+ * Updates the state of the FSM.
  *
  * arguments:
  *   nothing
@@ -58,8 +65,12 @@ void set_blink(char * msg) {
  *   nothing
  *
  * changes:
- *   count array changed
+ *   LED FSM state
  */
 void update(void) {
+    /* if blink_msg = 0, done */
 
+    /* if !delay_isdone(0), done */
+
+    /* update FSM */
 }

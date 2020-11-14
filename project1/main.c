@@ -1,22 +1,20 @@
 /********************************************************
  * main.c
  *
- * SER486 Assignment ###
+ * SER486 Project 1
  * Fall 2020
- * Written By:  Ty Foster (instructor)
+ * Written By:  Ty Foster (sudent)
  * Modified By: Ty Foster (student)
  *
  * this file implements functions associated with SER486
- * homework assignment ###.  The procedures implemented
- * provide led and console output support for debugging
- * of future SER 486 assignments.
+ * project 1.  The procedures implemented provide led and 
+ * console output support for debugging of future SER 486 
+ * assignments.
  *
  * functions are:
  *    main(void) - a function to execute the code for the
  *                        assignment.
  */
-
-#include <avr/io.h>
 
 int main(void)
 {

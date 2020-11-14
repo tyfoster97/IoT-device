@@ -20,3 +20,46 @@
  *      update(void) - called in main control loop to
  *                      update the state of the LED FSM
  */
+
+/* ATTRIBUTES */
+
+/* METHODS */
+/**********************************
+ * __vector_14(void)
+ *
+ * This code increments each instance's
+ *  count by 1 after 1ms until the limit
+ *  for the instance is reached.
+ *
+ * arguments:
+ *   nothing
+ *
+ * returns:
+ *   nothing
+ *
+ * changes:
+ *   count array changed
+ */
+void set_blink(char * msg) {
+
+}
+
+/**********************************
+ * __vector_14(void)
+ *
+ * This code increments each instance's
+ *  count by 1 after 1ms until the limit
+ *  for the instance is reached.
+ *
+ * arguments:
+ *   nothing
+ *
+ * returns:
+ *   nothing
+ *
+ * changes:
+ *   count array changed
+ */
+void update(void) {
+
+}

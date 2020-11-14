@@ -22,6 +22,11 @@
  */
 
 /* ATTRIBUTES */
+#define PORTB (*((volatile char *) 0x25))
+#define DDRB (*((volatile char *) 0x24))
+char * blink_msg;
+unsigned int blink_pos;
+unsigned char blink_state;
 
 /* METHODS */
 /**********************************

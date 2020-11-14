@@ -38,6 +38,9 @@ unsigned int limit[] = {0xFF, 0xFF};
 #define TCCR0B (*((volatile char *) 0x45))
 #define TIMSK0 (*((volatile char *) 0x6E))
 #define OCR0A (*((volatile char *) 0x47))
+#ifndef SREG
+    #define SREG (*((volatile char *) 0x5F))
+#endif
 
 
 /* METHODS */
@@ -60,14 +63,16 @@ unsigned int limit[] = {0xFF, 0xFF};
  *      compare with OCR0A
  *   enables interrupts
  */
-void delay_init(void) {
+void init(void) {
     /* set timer0 compare for 1ms tick */
-
+    OCR0A = 0XF9; //Count up to 249 with prescaler 64 (1kHz)
     /* set CTC mode and correct clock divisor */
-
+    TCCR0A = 0xC2;
+    TCCR0B = 0x03;
     /* enable interrupts on output compare A */
-
+    TIMSK0 = 0X02;
     /* stop further initialization by setting initialized to 1 */
+    initialized = 1;
 }
 
 /**********************************
@@ -88,14 +93,15 @@ void delay_init(void) {
  */
 unsigned int get(unsigned int num) {
     /* get global interrupt enable state */
-
+    unsigned char gis = SREG & 0x80;
     /* disable interrupts */
-
+    SREG &= 0x7F;
     /* get count[num] value */
-
+    unsigned int res = count[num];
     /* restore global interrupt state */
-
+    SREG |= gis;
     /* return count value */
+    return res;
 }
 
 /**********************************
@@ -119,17 +125,22 @@ unsigned int get(unsigned int num) {
  *   delay time for instance num
  */
 void delay_set(unsigned int num, unsigned int time) {
+    static unsigned char initialized = 0;
     /* check if timer0 is initialized */
+    if (!initialized) {
         /* initialize timer0 */
-    
+        init();
+    }
     /* get global interrupt state */
-
+    unsigned char gis = SREG & 0x80;
     /* disable interrupts */
-
+    SREG &= 0x7F;
     /* set limit for delay[num] */
-    /* clear count gor delay[num] */
-
+    limit[num] = time;
+    /* clear count for delay[num] */
+    count[num] = 0;
     /* restore global interrupt state */
+    SREG |= gis;
 }
 
 /**********************************
@@ -150,12 +161,13 @@ void delay_set(unsigned int num, unsigned int time) {
  *   nothing
  */
 unsigned int delay_isdone(unsigned int num) {
-    /* result = 0 */
+    unsigned int result = 0;
 
-    /* if count[num] = limit[num] */
-        /* result = 1 */
+    if (count[num] == limit[num]) {
+        result = 1;
+    }
     
-    /* return result */
+    return result;
 }
 
 /**********************************
@@ -179,4 +191,6 @@ void __vector_14(void) __attribute__ ((signal, used, externally_visible));
 void __vector_14(void) {
     /* increment count for each instance of delay
         as long as count[num] < limit[num] */
+    if (count[0] < limit[0]) { count[0]++; }
+    if (count[1] < limit[1]) { count[1]++; }
 }

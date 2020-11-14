@@ -26,6 +26,8 @@
 /* ATTRIBUTES */
 #define PORTB (*((volatile char *) 0x25))
 #define DDRB (*((volatile char *) 0x24))
+#define PHASE1 10;
+#define PHASE2 20;
 char * blink_msg;
 unsigned int blink_pos;
 unsigned char blink_state;
@@ -50,14 +52,15 @@ unsigned char blink_state;
  */
 void set_blink(char * msg) {
     /* blink_msg = msg */
-
+    blink_msg = msg;
     /* blink_pos = 0 */
-
+    blink_pos = 0;
     /* blink_state = PHASE1 */
-
+    blink_state = PHASE1;
     /* delay_set(0,0) */
-
+    delay_set(0,0);
     /* led_off */
+    led_off();
 }
 
 /**********************************
@@ -76,8 +79,11 @@ void set_blink(char * msg) {
  */
 void update(void) {
     /* if blink_msg = 0, done */
-
-    /* if !delay_isdone(0), done */
-
-    /* update FSM */
+    if (blink_msg != 0) {
+        /* if !delay_isdone(0), done */
+        if (!delay_isdone(0)) {
+            /* update FSM */
+            blink_state = PHASE2;
+        }
+    }
 }

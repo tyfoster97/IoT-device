@@ -7,8 +7,8 @@
  * Modified By: Ty Foster (student)
  *
  * this file implements functions associated with SER486
- * project 1.  The procedures implemented provide led and 
- * console output support for debugging of future SER 486 
+ * project 1.  The procedures implemented provide led and
+ * console output support for debugging of future SER 486
  * assignments.
  *
  * functions are:

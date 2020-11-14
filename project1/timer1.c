@@ -17,11 +17,11 @@
  *
  * functions are:
  *      timer_init(void) - initializes timer and interrupt
- * 
+ *
  *      timer_get(void) - returns the current value for count
- * 
+ *
  *      timer_clear(void) - clears count value to 0
- * 
+ *
  *      __vector_11(void) - invoked by 1s timer interrupt,
  *                      increments count by 1.
  */
@@ -37,7 +37,7 @@ unsigned long count;
 
 /* METHODS */
 /**********************************
- * timer_init(void)
+ * timer1_init(void)
  *
  * initializes timer and interrupt.
  *
@@ -53,7 +53,7 @@ unsigned long count;
  *   Enables interrupts with OCR1A
  *   OCR1AH and OCR1AL set to necessary values
  */
-void timer_init(void) {
+void timer1_init(void) {
     /* set timer1 compare for 1s tick */
 
     /* set CTC mode */
@@ -64,7 +64,7 @@ void timer_init(void) {
 }
 
 /**********************************
- * timer_get(void)
+ * timer1_get(void)
  *
  * Gets the number of seconds elapse since
  *  init() or last clear().
@@ -78,7 +78,7 @@ void timer_init(void) {
  * changes:
  *   nothing
  */
-unsigned long timer_get(void) {
+unsigned long timer1_get(void) {
     /* get global interrupt enable state */
 
     /* disable interrupts */
@@ -88,10 +88,11 @@ unsigned long timer_get(void) {
     /* restore global interrupt state */
 
     /* return count value */
+    return 0;
 }
 
 /**********************************
- * timer_clear(void)
+ * timer1_clear(void)
  *
  * Clears the count for the timer.
  *
@@ -104,7 +105,7 @@ unsigned long timer_get(void) {
  * changes:
  *   sets count to 0
  */
-void timer_clear(void) {
+void timer1_clear(void) {
     /* get global interrupt state */
 
     /* disable interrupt */
@@ -128,7 +129,7 @@ void timer_clear(void) {
  * changes:
  *   increments count
  */
-void __vector_11(void) __attribute__ ((signal, used, externally_visibile));
+void __vector_11(void) __attribute__ ((signal, used, externally_visible));
 void __vector_11(void) {
     /* count ++ */
 }

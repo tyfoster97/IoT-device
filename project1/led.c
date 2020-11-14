@@ -16,7 +16,7 @@
  * functions are:
  *      set_blink(char *) - sets blink pattern to a new
  *                      message, clears FSM
- * 
+ *
  *      update(void) - called in main control loop to
  *                      update the state of the LED FSM
  */
@@ -50,7 +50,7 @@ unsigned char blink_state;
  *   FSM for LED
  *   sets LED to off state
  */
-void set_blink(char * msg) {
+void led_set_blink(char * msg) {
     /* blink_msg = msg */
     blink_msg = msg;
     /* blink_pos = 0 */
@@ -77,7 +77,7 @@ void set_blink(char * msg) {
  * changes:
  *   LED FSM state
  */
-void update(void) {
+void led_update(void) {
     /* if blink_msg = 0, done */
     if (blink_msg != 0) {
         /* if !delay_isdone(0), done */

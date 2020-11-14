@@ -12,20 +12,20 @@
  * All rights reserved
  *
  * functions are:
- *      delay_init(void) - a function that initializes 
+ *      delay_init(void) - a function that initializes
  *                       the timer and interrupt.
- * 
+ *
  *      delay_get(unsigned int) - a function that returns
  *                       the current count for the instance.
- * 
+ *
  *      delay_set(unsigned int, unsigned int) - a function
  *                       that sets the delay and clears the
  *                       elapsed time for the instance number.
- * 
+ *
  *      delay_isdone(unsigned int) - returns 1 if the delay
  *                       count matches the limit, otherwise
  *                       returns 0.
- * 
+ *
  *      __vector_14() - invoked by 1ms delay timer interrupt,
  *                       increments the delay count by 1 until
  *                       limit is reached.
@@ -42,6 +42,7 @@ unsigned int limit[] = {0xFF, 0xFF};
     #define SREG (*((volatile char *) 0x5F))
 #endif
 
+ #include "uart.h"
 
 /* METHODS */
 /**********************************
@@ -72,7 +73,6 @@ void init(void) {
     /* enable interrupts on output compare A */
     TIMSK0 = 0X02;
     /* stop further initialization by setting initialized to 1 */
-    initialized = 1;
 }
 
 /**********************************
@@ -95,7 +95,7 @@ unsigned int get(unsigned int num) {
     /* get global interrupt enable state */
     unsigned char gis = SREG & 0x80;
     /* disable interrupts */
-    SREG &= 0x7F;
+    __builtin_avr_cli();
     /* get count[num] value */
     unsigned int res = count[num];
     /* restore global interrupt state */
@@ -108,7 +108,7 @@ unsigned int get(unsigned int num) {
  * delay_set(unsigned int num, unsigned int time)
  *
  * This code initializes timer0 on first call
- *  and sets the time to delay and clear the 
+ *  and sets the time to delay and clear the
  *  count for the specified instance number.
  *
  * arguments:
@@ -125,16 +125,17 @@ unsigned int get(unsigned int num) {
  *   delay time for instance num
  */
 void delay_set(unsigned int num, unsigned int time) {
-    static unsigned char initialized = 0;
+    static unsigned char initialized;
     /* check if timer0 is initialized */
     if (!initialized) {
         /* initialize timer0 */
         init();
+        initialized = 1;
     }
     /* get global interrupt state */
     unsigned char gis = SREG & 0x80;
     /* disable interrupts */
-    SREG &= 0x7F;
+    __builtin_avr_cli();
     /* set limit for delay[num] */
     limit[num] = time;
     /* clear count for delay[num] */
@@ -166,7 +167,7 @@ unsigned int delay_isdone(unsigned int num) {
     if (count[num] == limit[num]) {
         result = 1;
     }
-    
+
     return result;
 }
 

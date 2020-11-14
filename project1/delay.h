@@ -16,7 +16,7 @@
 #define DELAY_H_INCLUDED
 
 /* get the current tick counter value for the specified instance */
-unsigned int delay_get(unsigned int num);
+unsigned delay_get(unsigned int num);
 
 /* set the counter limit and reset the count for the specified instance */
 void     delay_set(unsigned int num, unsigned int msec);

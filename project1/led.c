@@ -24,13 +24,11 @@
 #include "led.h"
 
 /* ATTRIBUTES */
-#define PORTB (*((volatile char *) 0x25))
-#define DDRB (*((volatile char *) 0x24))
 #define PHASE1 10;
 #define PHASE2 20;
-char * blink_msg;
-unsigned int blink_pos;
-unsigned char blink_state;
+static char * blink_msg;
+static unsigned int blink_pos;
+static unsigned char blink_state;
 
 /* METHODS */
 /**********************************
@@ -63,6 +61,14 @@ void led_set_blink(char * msg) {
     led_off();
 }
 
+void next_pos(void) {
+    if (blink_msg[blink_pos+1]==0) {
+        blink_pos = 0;
+    } else {
+        blink_pos++;
+    }
+}
+
 /**********************************
  * update(void)
  *
@@ -79,11 +85,46 @@ void led_set_blink(char * msg) {
  */
 void led_update(void) {
     /* if blink_msg = 0, done */
-    if (blink_msg != 0) {
-        /* if !delay_isdone(0), done */
-        if (!delay_isdone(0)) {
-            /* update FSM */
-            blink_state = PHASE2;
-        }
+    if (blink_msg==0) return;
+    /* if !delay_isdone(0), done */
+    if (!delay_isdone(0)) return;
+
+    /* update FSM */
+    switch(blink_state) {
+        case PHASE1:
+            /* set the led and wait for - . or space */
+            switch(blink_msg[blink_pos]) {
+                case ' ':
+                    led_off();
+                    delay_set(0,1000);
+                    /* exit condition */
+                    next_pos();
+                    break;
+                case '-':
+                    led_on();
+                    delay_set(0,750);
+                    break;
+                case '.':
+                    led_on();
+                    delay_set(0,250);
+                    break;
+                default:
+                    led_off();
+                    delay_set(0,0);
+                    break;
+            }
+            /* exit condition for non space character */
+            if (blink_msg[blink_pos]!=' ') blink_state = PHASE2;
+            break;
+        case PHASE2:
+            /* delay between characters */
+            delay_set(0,100);
+            led_off();
+            blink_state = PHASE1;
+            next_pos();
+            break;
+        default:
+            blink_state = PHASE1;
+            break;
     }
 }

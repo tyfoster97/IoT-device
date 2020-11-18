@@ -27,13 +27,15 @@
  */
 
 /* ATTRIBUTES */
-unsigned long count;
+static unsigned long count;
 #define TCCR1A (*((volatile char *) 0x80))
 #define TCCR1B (*((volatile char *) 0x81))
 #define TCCR1C (*((volatile char *) 0x82))
 #define TIMSK1 (*((volatile char *) 0x6F))
-#define OCR1AH (*((volatile char *) 0x89))
-#define OCR1AL (*((volatile char *) 0x88))
+#define OCR1A (*((volatile char *) 0x88))
+#ifndef SREG
+    #define SREG (*((volatile char *) 0x5F))
+#endif
 
 /* METHODS */
 /**********************************
@@ -55,12 +57,13 @@ unsigned long count;
  */
 void timer1_init(void) {
     /* set timer1 compare for 1s tick */
-
-    /* set CTC mode */
-
     /* set clock divisor */
-
+    OCR1A = 62500;
+    /* set CTC mode */
+    TCCR1A = 0x00;
+    TCCR1B = 0x0C;
     /* enable interrupts on output compare A */
+    TIMSK1 = 0x02;
 }
 
 /**********************************
@@ -80,15 +83,15 @@ void timer1_init(void) {
  */
 unsigned long timer1_get(void) {
     /* get global interrupt enable state */
-
+    unsigned char sreg = SREG;
     /* disable interrupts */
-
+    __builtin_avr_cli();
     /* get the count value */
-
+    unsigned long res = count;
     /* restore global interrupt state */
-
+    SREG = sreg;
     /* return count value */
-    return 0;
+    return res;
 }
 
 /**********************************
@@ -107,12 +110,13 @@ unsigned long timer1_get(void) {
  */
 void timer1_clear(void) {
     /* get global interrupt state */
-
+    unsigned char sreg = SREG;
     /* disable interrupt */
-
+    __builtin_avr_cli();
     /* count = 0 */
-
+    count = 0;
     /* restore global interrupt state */
+    SREG = sreg;
 }
 
 /**********************************
@@ -132,4 +136,5 @@ void timer1_clear(void) {
 void __vector_11(void) __attribute__ ((signal, used, externally_visible));
 void __vector_11(void) {
     /* count ++ */
+    count++;
 }

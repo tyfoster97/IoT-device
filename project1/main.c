@@ -26,6 +26,7 @@ int main(void)
 {
     /* initialize uart, led, and rtc */
     uart_init();
+    timer1_init();
     led_init();
     rtc_init();
 
@@ -50,11 +51,17 @@ int main(void)
     uart_writedec32(c1); uart_writestr(" ");
     uart_writedec32(c2); uart_writestr("\n\r");
 
+    /* set delay 1 for 500ms */
+    delay_set(1, 500);
     while(1) {
         /* update led blink FSM */
-
+        led_update();
         /* display rtc date string every 500ms (instance 1 of delay) */
-
-        /* send carriage return */
+        if (delay_isdone(1)) {
+            delay_set(1,500);
+            uart_writestr(rtc_get_date_string());
+            /* send carriage return */
+            uart_writestr('\r');
+        }
     }
 }

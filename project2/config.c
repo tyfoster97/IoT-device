@@ -37,7 +37,7 @@ static struct config_struct defaults = {
 static unsigned char modified = 0;
 
 /**********************************
- * is_data_valid(void)
+ * config_is_data_valid(void)
  *
  * checks if the data is valid
  *
@@ -50,7 +50,7 @@ static unsigned char modified = 0;
  * changes:
  *  nothing
  */
-int is_data_valid(void) {
+int config_is_data_valid(void) {
     int ret = 1;
     /* check token */
     if (config.token!="ASU") ret = 0;
@@ -60,7 +60,7 @@ int is_data_valid(void) {
 }
 
 /**********************************
- * write_defaults(void)
+ * config_write_defaults(void)
  *
  * Writes default data to EEPROM
  *
@@ -73,7 +73,7 @@ int is_data_valid(void) {
  * changes:
  *  Config data on EEPROM
  */
-void write_defaults(void) {
+void config_write_defaults(void) {
     /* update checksum for defaults */
     update_checksum((char *) &defaults, CONFIG_SIZE);
     /* write defaults to eeprom */
@@ -101,9 +101,9 @@ void config_init(void) {
     /* initialize config with EEPROM data */
     eeprom_readbuf(CONFIG_ADDR, (char *) &config, CONFIG_SIZE);
     /* check if data is valid */
-    if (!is_data_valid()) {
+    if (!config_is_data_valid()) {
         /* write defualt data */
-        write_defaults();
+        config_write_defaults();
         /* initialize config from EEPROM */
         eeprom_readbuf(CONFIG_ADDR, (char *) &config, CONFIG_SIZE);
         /* clear modified flag */

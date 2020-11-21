@@ -41,7 +41,7 @@ static struct vpd_struct defaults = {
 };
 
 /**********************************
- * is_data_valid(void)
+ * vpd_is_data_valid(void)
  *
  * Checks if VPD is valid data
  *
@@ -54,7 +54,7 @@ static struct vpd_struct defaults = {
  * changes:
  *  nothing
  */
-int is_data_valid(void) {
+int vpd_is_data_valid(void) {
     int ret = 1;
     /* if token is invalid -> data invalid */
     if (vpd.token!="SER") ret = 0;
@@ -64,7 +64,7 @@ int is_data_valid(void) {
 }
 
 /**********************************
- * write_defaults()
+ * vpd_write_defaults()
  *
  * Sets default VPD on EEPROM when
  *  data has been corrupted
@@ -78,7 +78,7 @@ int is_data_valid(void) {
  * changes:
  *  VPD on EEPROM
  */
-void write_defaults() {
+void vpd_write_defaults() {
     /* update checksum for defaults */
     update_checksum((char *) &defaults, VPD_SIZE);
     /* write defaults to EEPROM */
@@ -106,9 +106,9 @@ void vpd_init(void) {
     /* initialize vpd data with eeprom_readbuf() */
     eeprom_readbuf(VPD_ADDR, (char *) &vpd, VPD_SIZE);
     /* check data validity */
-    if (!is_data_valid()) { //if data is corrupt
+    if (!vpd_is_data_valid()) { //if data is corrupt
         /* set defaults */
-        write_defaults();
+        vpd_write_defaults();
         /* initialize data again */
         eeprom_readbuf(VPD_ADDR, (char *) &vpd, VPD_SIZE);
     }

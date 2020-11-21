@@ -23,9 +23,10 @@
 
 #define CONFIG_ADDR 0x0040
 #define CONFIG_SIZE 18
+#define CONFIG_TOKEN "ASU"
 
 static struct config_struct defaults = {
-    .token = "ASU",
+    .token = CONFIG_TOKEN,
     .hi_alarm = 0x3FF,
     .hi_warn = 0x3FE,
     .lo_alarm = 0x0000,
@@ -35,6 +36,33 @@ static struct config_struct defaults = {
     .checksum = 0
 };
 static unsigned char modified = 0;
+
+/**********************************
+ * config_token_cmp()
+ *
+ * Compares config token to valid token
+ *
+ * arguments:
+ *  nothing
+ *
+ * returns:
+ *  1 if tokens are equal, otherwise 0
+ *
+ * changes:
+ *  nothing
+ */
+int config_token_cmp() {
+    unsigned char i;
+    int ret = 1;
+    /* check for equality character by character */
+    for(i=0; config.token[i]!='\0' && CONFIG_TOKEN[i]!='\0' && ret; i++) {
+        /* if characters are not equal -> ret = 0 */
+        if(config.token[i]!=CONFIG_TOKEN[i]) ret = 0;
+    }
+    /* if a is done but b is not -> ret = 0 */
+    if (config.token[i]!=CONFIG_TOKEN[i]) ret = 0;
+    return ret;
+}
 
 /**********************************
  * config_is_data_valid(void)

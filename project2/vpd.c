@@ -23,6 +23,7 @@
 
 #define VPD_ADDR 0x0000
 #define VPD_SIZE 55
+#define VPD_TOKEN "SER"
 
 /* 
 NOTE:
@@ -30,7 +31,7 @@ NOTE:
     I selected space as x3
 */
 static struct vpd_struct defaults = {
-    .token = "SER",
+    .token = VPD_TOKEN,
     .model = "Ty",
     .manufacturer = "Foster",
     .serial_number = "S239B01U76X",
@@ -39,6 +40,33 @@ static struct vpd_struct defaults = {
     .country_of_origin = "USA",
     .checksum = 0
 };
+
+/**********************************
+ * vpd_token_cmp()
+ *
+ * Compares vpd token to valid token
+ *
+ * arguments:
+ *  nothing
+ *
+ * returns:
+ *  1 if tokens are equal, otherwise 0
+ *
+ * changes:
+ *  nothing
+ */
+int vpd_token_cmp() {
+    unsigned char i;
+    int ret = 1;
+    /* check for equality character by character */
+    for(i=0; vpd.token[i]!='\0' && VPD_TOKEN[i]!='\0' && ret; i++) {
+        /* if characters are not equal -> ret = 0 */
+        if(vpd.token[i]!=VPD_TOKEN[i]) ret = 0;
+    }
+    /* if a is done but b is not -> ret = 0 */
+    if (vpd.token[i]!=VPD_TOKEN[i]) ret = 0;
+    return ret;
+}
 
 /**********************************
  * vpd_is_data_valid(void)
@@ -57,7 +85,7 @@ static struct vpd_struct defaults = {
 int vpd_is_data_valid(void) {
     int ret = 1;
     /* if token is invalid -> data invalid */
-    if (vpd.token!="SER") ret = 0;
+    if (vpd_token_cmp()) ret = 0;
     /* if checksum is invalid -> data invalid */
     if (!is_checksum_valid((unsigned char *) &vpd, VPD_SIZE)) ret = 0;
     return ret;

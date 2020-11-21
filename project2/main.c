@@ -22,6 +22,21 @@
 #include "uart.h"
 #include "util.h"
 
+/**********************************
+ * main(void)
+ *
+ * Runs the main embedded program on
+ *  the atmega328p.
+ *
+ * arguments:
+ *  nothing
+ *
+ * returns:
+ *  nothing
+ *
+ * changes:
+ *  nothing
+ */
 int main(void)
 {
     /* initialization */

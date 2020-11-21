@@ -18,12 +18,12 @@
 #define INCLUDE_EEPROM_H
 
 /* places data into specified buffer */
-void writebuf(unsigned int addr, unsigned char * buf, unsigned char size);
+void eeprom_writebuf(unsigned int addr, unsigned char * buf, unsigned char size);
 
 /* reads data from eeprom */
-void readbuf(unsigned int addr, unsigned char * buf, unsigned char size);
+void eeprom_readbuf(unsigned int addr, unsigned char * buf, unsigned char size);
 
 /* checks if EEPROM is busy */
-int isbusy();
+int eeprom_isbusy();
 
 #endif

@@ -17,6 +17,20 @@
 #ifndef INCLUDE_CONFIG_H
 #define INCLUDE_CONFIG_H
 
+/* struct size -> 18bytes */
+struct config_struct {
+    char token[4]; //4b
+    unsigned int hi_alarm; //2b
+    unsigned int hi_warn; //2b
+    unsigned int lo_alarm; //2b
+    unsigned int lo_warn; //2b
+    char use_static_ip; //1b
+    unsigned char static_ip[4]; //4b
+    unsigned char checksum; //1b
+};
+
+struct config_struct config;
+
 /* initializes config data from EEPROM */
 void config_init();
 

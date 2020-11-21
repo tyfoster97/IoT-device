@@ -14,7 +14,18 @@
  * All rights reserved
  * 
  * functions are:
- *      
+ *      vpd_token_cmp(void) - a function to compare the
+ *          VPD token from EEPROM to the token for the
+ *          VPD for the program
+ * 
+ *      vpd_is_data_valid(void) - a function to check
+ *          that the VPD data is valid
+ * 
+ *      vpd_write_defaults(void) - a function to write
+ *          default data to EEPROM after corruption
+ * 
+ *      vpd_init(void) - a function to initialize VPD
+ *          from EEPROM
  */
 
 #include "eeprom.h"

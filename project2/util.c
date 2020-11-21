@@ -14,7 +14,18 @@
  * All rights reserved
  * 
  * functions are:
- *      
+ *      calc_sum(unsigned char *, unsigned int) - 
+ *          a function to calculate the sum of the data
+ *          excluding the checksum
+ * 
+ *      update_checksum(unsigned char *, unsigned int) -
+ *          a function to update the checksum for the
+ *          data
+ * 
+ *      is_valid_checksum(unsigned char *, unsigned int) -
+ *          a function to check if the checksum for the
+ *          data is a valid checksum. Determines if data
+ *          is corrupted
  */
 
 /**********************************

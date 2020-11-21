@@ -13,3 +13,17 @@
  * All rights reserved
  *
  */
+
+#ifndef INCLUDE_CONFIG_H
+#define INCLUDE_CONFIG_H
+
+/* initializes config data from EEPROM */
+void config_init();
+
+/* updates config data if needed and able */
+void config_update();
+
+/* sets modified flag */
+void config_set_modified();
+
+#endif

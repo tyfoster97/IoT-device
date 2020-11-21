@@ -13,3 +13,11 @@
  * All rights reserved
  *
  */
+
+#ifndef INCLUDE_VPD_H
+#define INCLUDE_VPD_H
+
+/* initializes vital product data */
+void vpd_init();
+
+#endif

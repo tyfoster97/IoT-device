@@ -13,3 +13,17 @@
  * All rights reserved
  *
  */
+
+#ifndef INCLUDE_EEPROM_H
+#define INCLUDE_EEPROM_H
+
+/* places data into specified buffer */
+void writebuf(unsigned int addr, unsigned char * buf, unsigned char size);
+
+/* reads data from eeprom */
+void readbuf(unsigned int addr, unsigned char * buf, unsigned char size);
+
+/* checks if EEPROM is busy */
+int isbusy();
+
+#endif

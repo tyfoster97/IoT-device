@@ -80,9 +80,9 @@ int vpd_is_data_valid(void) {
  */
 void vpd_write_defaults() {
     /* update checksum for defaults */
-    update_checksum((char *) &defaults, VPD_SIZE);
+    update_checksum((unsigned char *) &defaults, VPD_SIZE);
     /* write defaults to EEPROM */
-    eeprom_writebuf(VPD_ADDR, (char *) &defaults, VPD_SIZE);
+    eeprom_writebuf(VPD_ADDR, (unsigned char *) &defaults, VPD_SIZE);
 }
 
 /**********************************
@@ -104,12 +104,12 @@ void vpd_init(void) {
     /* wait for eeprom writes */
     while(eeprom_isbusy());
     /* initialize vpd data with eeprom_readbuf() */
-    eeprom_readbuf(VPD_ADDR, (char *) &vpd, VPD_SIZE);
+    eeprom_readbuf(VPD_ADDR, (unsigned char *) &vpd, VPD_SIZE);
     /* check data validity */
     if (!vpd_is_data_valid()) { //if data is corrupt
         /* set defaults */
         vpd_write_defaults();
         /* initialize data again */
-        eeprom_readbuf(VPD_ADDR, (char *) &vpd, VPD_SIZE);
+        eeprom_readbuf(VPD_ADDR, (unsigned char *) &vpd, VPD_SIZE);
     }
 }

@@ -162,4 +162,4 @@ void __vector_22(void) {
         write_busy=0; //reset flag
     }
 }
-#pragma pop_options
+#pragma GCC pop_options

@@ -99,13 +99,13 @@ void config_init(void) {
     /* wait for any EEPROM writes */
     while(eeprom_isbusy());
     /* initialize config with EEPROM data */
-    eeprom_readbuf(CONFIG_ADDR, (char *) &config, CONFIG_SIZE);
+    eeprom_readbuf(CONFIG_ADDR, (unsigned char *) &config, CONFIG_SIZE);
     /* check if data is valid */
     if (!config_is_data_valid()) {
         /* write defualt data */
         config_write_defaults();
         /* initialize config from EEPROM */
-        eeprom_readbuf(CONFIG_ADDR, (char *) &config, CONFIG_SIZE);
+        eeprom_readbuf(CONFIG_ADDR, (unsigned char *) &config, CONFIG_SIZE);
         /* clear modified flag */
         modified = 0;
     }
@@ -132,9 +132,9 @@ void config_update(void) {
     /* check if data has been modified */
     if (!modified) return;
     /* update checksum */
-    update_checksum((char *) &config, CONFIG_SIZE);
+    update_checksum((unsigned char *) &config, CONFIG_SIZE);
     /* write config to eeprom */
-    eeprom_writebuf(CONFIG_ADDR, (char *) &config, CONFIG_SIZE);
+    eeprom_writebuf(CONFIG_ADDR, (unsigned char *) &config, CONFIG_SIZE);
     /* clear modified flag */
     modified=0;
 }

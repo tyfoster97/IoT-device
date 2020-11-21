@@ -14,7 +14,25 @@
  * All rights reserved
  * 
  * functions are:
- *      
+ *      config_token_cmp(void) - a function to compare
+ *          the config token from EEPROM to the token
+ *          used for config
+ * 
+ *      config_is_data_valid(void) - a function to
+ *          verify the config data from EEPROM has not
+ *          been corrupted
+ * 
+ *      config_write_defaults(void) - a function to
+ *          write the default config data to EEPROM
+ * 
+ *      config_init(void) - a function to initialize
+ *          config data from EEPROM for program
+ * 
+ *      config_update(void) - a function to update
+ *          config data in EEPROM after modification
+ * 
+ *      config_set_modified(void) - a function to
+ *          set the modified flag
  */
 
 #include "config.h"

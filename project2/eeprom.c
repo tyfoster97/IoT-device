@@ -14,7 +14,20 @@
  * All rights reserved
  * 
  * functions are:
- *      
+ *      eeprom_writebuf(unsigned char *, unsigned char *, unsigned char) - 
+ *              a function to write data from buffer to
+ *              EEPROM 
+ * 
+ *      eeprom_readbuf(unsigned char *, unsigned char *, unsigned char) - 
+ *              a function to read data from EEPROM to 
+ *              buffer
+ * 
+ *      eeprom_isbusy(void) - a function to check if
+ *              the EEPROM is busy writing data
+ * 
+ *      __vector_22(void) - an interrupt service routine
+ *              that writes data from the writebuffer
+ *              into EEPROM
  */
 
 #include "eeprom.h"

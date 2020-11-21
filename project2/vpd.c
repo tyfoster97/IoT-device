@@ -59,7 +59,7 @@ int vpd_is_data_valid(void) {
     /* if token is invalid -> data invalid */
     if (vpd.token!="SER") ret = 0;
     /* if checksum is invalid -> data invalid */
-    if (!is_checksum_valid((char *) &vpd, VPD_SIZE)) ret = 0;
+    if (!is_checksum_valid((unsigned char *) &vpd, VPD_SIZE)) ret = 0;
     return ret;
 }
 

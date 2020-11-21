@@ -55,7 +55,7 @@ int config_is_data_valid(void) {
     /* check token */
     if (config.token!="ASU") ret = 0;
     /* check checksum */
-    if (!is_checksum_valid((char *) &config, CONFIG_SIZE)) ret = 0;
+    if (!is_checksum_valid((unsigned char *) &config, CONFIG_SIZE)) ret = 0;
     return ret;
 }
 
@@ -75,9 +75,9 @@ int config_is_data_valid(void) {
  */
 void config_write_defaults(void) {
     /* update checksum for defaults */
-    update_checksum((char *) &defaults, CONFIG_SIZE);
+    update_checksum((unsigned char *) &defaults, CONFIG_SIZE);
     /* write defaults to eeprom */
-    eeprom_writebuf(CONFIG_ADDR, (char *) &defaults, CONFIG_SIZE);
+    eeprom_writebuf(CONFIG_ADDR, (unsigned char *) &defaults, CONFIG_SIZE);
 }
 
 /**********************************

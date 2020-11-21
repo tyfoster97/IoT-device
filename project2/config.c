@@ -81,7 +81,7 @@ int config_token_cmp() {
 int config_is_data_valid(void) {
     int ret = 1;
     /* check token */
-    if (config.token!="ASU") ret = 0;
+    if (config_token_cmp()) ret = 0;
     /* check checksum */
     if (!is_checksum_valid((unsigned char *) &config, CONFIG_SIZE)) ret = 0;
     return ret;

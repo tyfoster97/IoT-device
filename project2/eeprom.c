@@ -36,15 +36,21 @@
 #define EEAR (*((volatile char *) 0x41))
 #define EECR (*((volatile char *) 0x3F))
 #define EEDR (*((volatile char *) 0x40))
-#define EERIE 3
-#define EEMPE 2
-#define EEPE 1
 
 static unsigned char writebuf[BUFFSIZE];
 static unsigned char bufidx;
 static unsigned char writesize;
 static unsigned int writeaddr;
 static volatile unsigned char write_busy;
+
+#pragma GCC push_options
+#pragma GCC optimize ("Os")
+void eeprom_startwrite() {
+    /* start write */
+    EECR |= 0x04;
+    EECR |= 0x02;
+}
+#pragma GCC pop_options
 
 
 /**********************************
@@ -65,8 +71,6 @@ static volatile unsigned char write_busy;
  * changes:
  *  EECR to enable ready interrupts
  */
-#pragma GCC push_options
-#pragma GCC optimize ("Os")
 void eeprom_writebuf(unsigned int addr, unsigned char * buf, unsigned char size){
     if (size > 64) return; //size checking
     /* wait until write buffer is available */
@@ -80,7 +84,7 @@ void eeprom_writebuf(unsigned int addr, unsigned char * buf, unsigned char size)
     }
     writesize=size; //set write size
     /* enable EEPROM ready interrupts */
-    EECR |= (1<<EERIE);
+    EECR |= 0x08;
 }
 
 /**********************************
@@ -162,17 +166,13 @@ void __vector_22(void) {
         /* write writebuff[bufidx] to writeaddr in EEPROM */
         EEDR = writebuf[bufidx]; //set data
         EEAR = writeaddr; //set addr
-        /* enable EEMPE */
-        EECR |= (1<<EEMPE);
-        /* enable EEPE */
-        EECR |= (1<<EEPE); //writes data
+        eeprom_startwrite();
         /* increment writeaddr and bufidx */
         writeaddr++;
         bufidx++;
     } else {
         /* disable EEPROM ready interrupts */
-        EECR &= (0<<EERIE);
+        EECR &= 0xF7;
         write_busy=0; //reset flag
     }
 }
-#pragma GCC pop_options

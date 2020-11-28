@@ -11,15 +11,15 @@
  * functions are:
  *      tempfsm_alert(int, char*) - sends an event to the
  *          log and changes the blink message of the led.
- * 
+ *
  *      tempfsm_init(void) - initializes the temp FSM
- * 
+ *
  *      tempfsm_reset(void) - resets the FSM to NORM1 state
- * 
+ *
  *      tempfsm_update(int, int, int, int, int) - updates
  *          the FSM based on current state, temp, and the
  *          warning and critical temperature thresholds.
- *    
+ *
  */
 
 #include "alarm.h"
@@ -128,81 +128,81 @@ void tempfsm_reset(void) {
  *  if the temperature is in a safe
  *  range
  */
-tempfsm_update(int tcurrent, int tcrit_h, int twarn_h, int tcrit_l, int twarn_l) {
+void tempfsm_update(int tcurrent, int tcrit_h, int twarn_h, int tcrit_l, int twarn_l) {
     /* determine state */
     switch(state) {
         case NORM1:
             if (tcurrent>=twarn_h) {
-                tempfsm_alert(EVENT_HI_WARN, '-');
+                tempfsm_alert(EVENT_HI_WARN, "-");
                 state = WARNHI1;
             } else if (tcurrent<=twarn_l) {
-                tempfsm_alert(EVENT_LO_WARN, '-');
+                tempfsm_alert(EVENT_LO_WARN, "-");
                 state = WARNLO1;
             }
             break;
         case NORM2:
             if (tcurrent>=twarn_h) {
-                tempfsm_alert(EVENT_HI_WARN, '-');
+                tempfsm_alert(EVENT_HI_WARN, "-");
                 state = WARNHI2;
             } else if (tcurrent<=twarn_l) {
-                led_set_blink('-');
+                led_set_blink("-");
                 state = WARNLO1;
             }
             break;
         case NORM3:
             if (tcurrent>=twarn_h) {
-                led_set_blink('-');
+                led_set_blink("-");
                 state = WARNHI1;
             } else if (tcurrent<=twarn_l) {
-                tempfsm_alert(EVENT_LO_WARN, '-');
+                tempfsm_alert(EVENT_LO_WARN, "-");
                 state = WARNLO1;
             }
             break;
         case WARNLO1:
             if (tcurrent>twarn_l){
-                led_set_blink(' ');
+                led_set_blink(" ");
                 state = NORM2;
             } else if (tcurrent<=tcrit_l){
-                tempfsm_alert(EVENT_LO_ALARM, '.');
+                tempfsm_alert(EVENT_LO_ALARM, ".");
                 state = CRITLO;
             }
             break;
         case WARNLO2:
             if (tcurrent>twarn_l) {
-                led_set_blink(' ');
+                led_set_blink(" ");
                 state = NORM2;
             } else if (tcurrent<=tcrit_l){
-                led_set_blink('.');
+                led_set_blink(".");
                 state = CRITLO;
             }
             break;
         case CRITLO:
             if (tcurrent>tcrit_l) {
-                led_set_blink('-');
+                led_set_blink("-");
                 state = WARNLO2;
             }
             break;
         case WARNHI1:
             if (tcurrent<twarn_h) {
-                led_set_blink(' ');
+                led_set_blink(" ");
                 state = NORM3;
             } else if (tcurrent>=tcrit_h) {
-                tempfsm_alert(EVENT_HI_ALARM, '.');
+                tempfsm_alert(EVENT_HI_ALARM, ".");
                 state = CRITHI;
             }
             break;
         case WARNHI2:
             if (tcurrent<twarn_h) {
-                led_set_blink(' ');
+                led_set_blink(" ");
                 state = NORM3;
             } else if (tcurrent>=tcrit_h) {
-                led_set_blink('.');
+                led_set_blink(".");
                 state = CRITHI;
             }
             break;
         case CRITHI:
             if (tcurrent<tcrit_h) {
-                led_set_blink('-');
+                led_set_blink("-");
                 state = WARNHI2;
             }
             break;

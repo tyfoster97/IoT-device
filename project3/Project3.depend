@@ -46,7 +46,7 @@
 
 1606522417 /home/ty/ser486/project3/wdt.h
 
-1606523344 source:/home/ty/ser486/project3/tempfsm.c
+1606524486 source:/home/ty/ser486/project3/tempfsm.c
 	"alarm.h"
 	"led.h"
 	"log.h"
@@ -57,9 +57,10 @@
 	"process_packet.h"
 	"util.h"
 
-1606522417 source:/home/ty/ser486/project3/wdt.c
+1606536038 source:/home/ty/ser486/project3/wdt.c
 	"config.h"
 	"led.h"
 	"log.h"
 	"wdt.h"
+	"uart.h"
 

@@ -60,6 +60,7 @@ static unsigned char state;
  */
 void tempfsm_alert(int event, char* msg) {
     alarm_send(event);
+    log_add_record(event);
     led_set_blink(msg);
 }
 

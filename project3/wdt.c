@@ -10,14 +10,14 @@
  *
  * functions are:
  *      wdt_init(void) - initializes the watchdog timer
- * 
+ *
  *      wdt_reset(void) - resets the watchdog timer, calling
  *          before timeout prevents shutdown
- * 
+ *
  *      wdt_force_restart(void) - disables watchdog interrupt
  *          and waits for a timeout to generate a system
  *          reset
- * 
+ *
  *      __vector_6(void) - turns on LED, adds EVENT_WDT to logs,
  *          and attempts to writeback any modified log and config
  *          info before forced system reset
@@ -26,7 +26,9 @@
 #include "led.h"
 #include "log.h"
 #include "wdt.h"
+#include "uart.h"
 
+#define MCUSR (*((volatile char *) 0x54))
 #define SREG (*((volatile char *) 0x5F))
 #define WDTCSR (*((volatile char *) 0x60))
 
@@ -51,11 +53,15 @@
 void wdt_init(void) {
     /* enable global interrupts */
     SREG |= 0x80;
-    /* enable watchdog interrupt every 2 seconds */
-    /* set for interrupt and system reset mode */
+
+    WDTCSR = 0x10;
+    /* set WDP, WDIE, and WDE */
     WDTCSR = 0x4F;
 }
 #pragma GCC pop_options
+
+#define WDE 3
+#define WDCE 4
 
 /**********************************
  * wdt_reset(void)
@@ -75,10 +81,38 @@ void wdt_init(void) {
 #pragma GCC push_options
 #pragma GCC optimize ("Os")
 void wdt_reset(void) {
+    /* set WDE and WDIE */
+    WDTCSR |= 0x10;
+    WDTCSR = 0x4F;
     /* reset watchdog timer */
     __builtin_avr_wdr();
 }
 #pragma GCC pop_options
+
+/**********************************
+ * write_cache_data(void)
+ *
+ * writes log and config data to
+ *      EEPROM
+ *
+ * arguments:
+ *  nothing
+ *
+ * returns:
+ *  nothing
+ *
+ * changes:
+ *  log and config data on
+ *  EEPROM
+ */
+void write_cache_data(void) {
+    /* write back log */
+    for(int i = 0; i < log_get_num_entries(); i++) {
+        log_update_noisr();
+    }
+    /* write back config */
+    config_update_noisr();
+}
 
 /**********************************
  * wdt_force_restart(void)
@@ -97,8 +131,12 @@ void wdt_reset(void) {
  *  resets the system
  */
 void wdt_force_restart(void) {
+    /* log WDT shutdown */
+    log_add_record(EVENT_WDT);
+    /* write cache data */
+    write_cache_data();
     /* disable watchdog interrupt */
-    WDTCSR &= 0xBF;
+    WDTCSR &= 0xBF; // 0b10111111
     /* wait for timeout */
     while(1);
 }
@@ -119,7 +157,6 @@ void wdt_force_restart(void) {
  *      needed.
  *  resets system
  */
-#define LOG_BUF_SIZE 16
 void __vector_6(void) __attribute__ ((signal, used, externally_visible));
 void __vector_6(void) {
     /* disable global interrupts */
@@ -129,9 +166,7 @@ void __vector_6(void) {
     /* log event */
     log_add_record(EVENT_WDT);
     /* write back log */
-    for(int i = 0; i < LOG_BUF_SIZE; i++) {
-        log_update_noisr();
-    }
-    /* write back config */
-    config_update_noisr();
+    write_cache_data();
+    /* enable global interrupts */
+    __builtin_avr_sei();
 }

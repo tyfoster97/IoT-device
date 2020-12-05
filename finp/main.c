@@ -237,7 +237,6 @@ int main(void)
                                 endp = DEVICE;
                                 /* set state */
                                 state = PARSE_PARAM;
-                                socket_writestr(SERVER_SOCKET, "R");
                             }
                             /* else if endp is config */
                             else if (socket_recv_compare(SERVER_SOCKET, "device/config?")) {
@@ -261,7 +260,6 @@ int main(void)
                             if (socket_recv_compare(SERVER_SOCKET, "reset=\"true\"")) {
                                 param = RESET;
                                 state = PROCESS_REQ;
-                                socket_writestr(SERVER_SOCKET, "RESET");
                             }
                             else {
                                 state = ERR_REP;
@@ -303,7 +301,6 @@ int main(void)
                     else if (cmd==PUT && endp==DEVICE) {
                         switch(param) {
                             case RESET:
-                                state = WAITING;
                                 wdt_force_restart();
                                 break;
                             default:

@@ -49,10 +49,24 @@
 int current_temperature = 75;
 
 static char state = WAITING;
-static char cmd; /* d = delete, g = get, p = put */
-static char endp; /* c = config, d = device, l = log */
+static char cmd;
+static char endp;
 static char param; 
 
+/********
+ * is_delimeter(char c)
+ * 
+ * Determines if a character is a delimeter
+ * 
+ * params:
+ *      c - character to compare
+ * 
+ * return:
+ *      1 if characters match, otherwise 0
+ * 
+ * changes:
+ *      none
+ */
 unsigned char is_delimeter(char c) {
     return c=='/';
 }

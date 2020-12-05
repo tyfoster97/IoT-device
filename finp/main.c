@@ -51,19 +51,20 @@ int current_temperature = 75;
 static char state = WAITING;
 static char cmd;
 static char endp;
-static char param; 
+static char param;
+static unsigned char ch = ' ';
 
 /********
  * is_delimeter(char c)
- * 
+ *
  * Determines if a character is a delimeter
- * 
+ *
  * params:
  *      c - character to compare
- * 
+ *
  * return:
  *      1 if characters match, otherwise 0
- * 
+ *
  * changes:
  *      none
  */
@@ -93,7 +94,7 @@ int main(void)
     rtc_init();
     spi_init();
     temp_init();
-    w5x_init();
+    W5x_init();
     tempfsm_init();
 
     /* sign the assignment
@@ -103,7 +104,7 @@ int main(void)
 
     /* configure the W51xx ethernet controller prior to DHCP */
     unsigned char blank_addr[] = {0, 0, 0, 0};
-    W51_config(vpd.mac_address, blank_addr, blank_addr, blank_addr);
+    W5x_config(vpd.mac_address, blank_addr, blank_addr, blank_addr);
 
     /* loop until a dhcp address has been gotten */
     while (!dhcp_start(vpd.mac_address, 60000UL, 4000UL))
@@ -113,7 +114,7 @@ int main(void)
     uart_writeip(dhcp_getLocalIp());
 
     /* configure the MAC, TCP, subnet and gateway addresses for the Ethernet controller*/
-    W51_config(vpd.mac_address, dhcp_getLocalIp(), dhcp_getGatewayIp(), dhcp_getSubnetMask());
+    W5x_config(vpd.mac_address, dhcp_getLocalIp(), dhcp_getGatewayIp(), dhcp_getSubnetMask());
 
     /* add a log record for EVENT_TIMESET prior to synchronizing with network time */
     log_add_record(EVENT_TIMESET);
@@ -164,7 +165,7 @@ int main(void)
             /* restart the temperature sensor delay to trigger in 1 second */
             temp_start();
             delay_set(0, 1000);
-        } 
+        }
         /*if the server socket is closed */
         else if(socket_is_closed(SERVER_SOCKET))
         {
@@ -172,8 +173,8 @@ int main(void)
             socket_open(SERVER_SOCKET, HTTP_PORT);
             socket_listen(SERVER_SOCKET);
 
-        } 
-        /* if there is input to process */ 
+        }
+        /* if there is input to process */
         else if(socket_received_line(SERVER_SOCKET))
         {
             switch(state) {
@@ -203,9 +204,8 @@ int main(void)
                     }
                     break;
                 case PARSE_ENDP:
-                    char c;
                     /* advance until '/' */
-                    while(!is_delimeter(c)) socket_recv(SERVER_SOCKET, &c, 1);
+                    while(!is_delimeter(ch)) socket_recv(SERVER_SOCKET, &ch, 1);
                     /* continue based on command */
                     switch(cmd) {
                         case DELETE:
@@ -237,6 +237,7 @@ int main(void)
                                 endp = DEVICE;
                                 /* set state */
                                 state = PARSE_PARAM;
+                                socket_writestr(SERVER_SOCKET, "R");
                             }
                             /* else if endp is config */
                             else if (socket_recv_compare(SERVER_SOCKET, "device/config?")) {
@@ -260,6 +261,7 @@ int main(void)
                             if (socket_recv_compare(SERVER_SOCKET, "reset=\"true\"")) {
                                 param = RESET;
                                 state = PROCESS_REQ;
+                                socket_writestr(SERVER_SOCKET, "RESET");
                             }
                             else {
                                 state = ERR_REP;
@@ -310,8 +312,8 @@ int main(void)
                         }
                     }
                     /* else if PUT && config */
-                    else if (cmd = PUT && endp==CONFIG) {
-                        int *t;
+                    else if (cmd == PUT && endp==CONFIG) {
+                        int *t = 0;
                         switch(param) {
                             case TC_HI:
                                 /* if int is command */
@@ -363,6 +365,7 @@ int main(void)
                     if (state==WAITING) {
                         socket_writestr(SERVER_SOCKET, "OK\r\n");
                         socket_flush_line(SERVER_SOCKET);
+                        socket_close(SERVER_SOCKET);
                     }
                     break;
                 case SEND_REP:
@@ -390,7 +393,7 @@ int main(void)
                     /* manufacture date */
                     socket_writequotedstring(SERVER_SOCKET, "manufacture_date");
                     socket_writestr(SERVER_SOCKET, ":");
-                    socket_writequotedstring(SERVER_SOCKET, vpd.manufacture_date);
+                    socket_writedate(SERVER_SOCKET, vpd.manufacture_date);
                     socket_writestr(SERVER_SOCKET, ",");
                     /* mac address */
                     socket_writequotedstring(SERVER_SOCKET, "mac_address");
@@ -406,27 +409,27 @@ int main(void)
                     /* tc_hi */
                     socket_writequotedstring(SERVER_SOCKET, "tcrit_hi");
                     socket_writestr(SERVER_SOCKET, ":");
-                    socket_write_int(SERVER_SOCKET, config.hi_alarm);
+                    socket_writedec32(SERVER_SOCKET, config.hi_alarm);
                     socket_writestr(SERVER_SOCKET, ",");
                     /* tw_hi */
                     socket_writequotedstring(SERVER_SOCKET, "twarn_hi");
                     socket_writestr(SERVER_SOCKET, ":");
-                    socket_write_int(SERVER_SOCKET, config.hi_warn);
+                    socket_writedec32(SERVER_SOCKET, config.hi_warn);
                     socket_writestr(SERVER_SOCKET, ",");
                     /* tc_lo */
                     socket_writequotedstring(SERVER_SOCKET, "tcrit_lo");
                     socket_writestr(SERVER_SOCKET, ":");
-                    socket_write_int(SERVER_SOCKET, config.lo_alarm);
+                    socket_writedec32(SERVER_SOCKET, config.lo_alarm);
                     socket_writestr(SERVER_SOCKET, ",");
                     /* tw_lo */
                     socket_writequotedstring(SERVER_SOCKET, "twarn_lo");
                     socket_writestr(SERVER_SOCKET, ":");
-                    socket_write_int(SERVER_SOCKET, config.lo_warn);
+                    socket_writedec32(SERVER_SOCKET, config.lo_warn);
                     socket_writestr(SERVER_SOCKET, ",");
                     /* temperature */
                     socket_writequotedstring(SERVER_SOCKET, "temperature");
                     socket_writestr(SERVER_SOCKET, ":");
-                    socket_write_int(SERVER_SOCKET, temp_get());
+                    socket_writedec32(SERVER_SOCKET, temp_get());
                     socket_writestr(SERVER_SOCKET, ",");
                     /* log */
                     socket_writequotedstring(SERVER_SOCKET, "log");
@@ -434,8 +437,8 @@ int main(void)
                     socket_writestr(SERVER_SOCKET, ":[");
                     /* for each entry */
                     for(unsigned long i=0; i < log_get_num_entries(); i++) {
-                        unsigned long *tstamp;
-                        unsigned char *event;
+                        unsigned long *tstamp = 0;
+                        unsigned char *event = 0;
                         log_get_record(i, tstamp, event);
                         /* ENTRY START */
                         socket_writestr(SERVER_SOCKET, "{");
@@ -447,7 +450,7 @@ int main(void)
                         /* event */
                         socket_writequotedstring(SERVER_SOCKET, "event");
                         socket_writestr(SERVER_SOCKET, ":");
-                        socket_write_int(SERVER_SOCKET, *event);
+                        socket_writedec32(SERVER_SOCKET, *event);
                         /* ENTRY END */
                         socket_writestr(SERVER_SOCKET, "}");
                         if (i+1 != log_get_num_entries()) socket_writestr(SERVER_SOCKET, ",");
@@ -458,6 +461,8 @@ int main(void)
                     socket_writestr(SERVER_SOCKET, "}");
                     /* crlf */
                     socket_writestr(SERVER_SOCKET, "\r\n");
+                    state = WAITING;
+                    socket_close(SERVER_SOCKET);
                     break;
                 case ERR_REP:
                     /* flush socket */
@@ -466,13 +471,15 @@ int main(void)
                     socket_writestr(SERVER_SOCKET, "INVALID\r\n");
                     /* change state */
                     state = WAITING;
+                    socket_close(SERVER_SOCKET);
                     break;
                 default:
                     state = WAITING;
+                    socket_close(SERVER_SOCKET);
                     break;
             }
-        } 
-        /* otherwise... */ 
+        }
+        /* otherwise... */
         else
         {
             /* update any pending log write backs */

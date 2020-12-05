@@ -1,0 +1,57 @@
+# depslib dependency file v1.0
+1607150990 source:/home/ty/ser486/finp/main.c
+	"config.h"
+	"delay.h"
+	"dhcp.h"
+	"led.h"
+	"log.h"
+	"rtc.h"
+	"spi.h"
+	"uart.h"
+	"vpd.h"
+	"temp.h"
+	"socket.h"
+	"alarm.h"
+	"wdt.h"
+	"tempfsm.h"
+	"eeprom.h"
+	"ntp.h"
+	"w51.h"
+	"signature.h"
+
+1607149811 /home/ty/ser486/finp/config.h
+
+1607149811 /home/ty/ser486/finp/delay.h
+
+1607149811 /home/ty/ser486/finp/dhcp.h
+
+1607149811 /home/ty/ser486/finp/led.h
+
+1607149811 /home/ty/ser486/finp/log.h
+
+1607149811 /home/ty/ser486/finp/rtc.h
+
+1607149811 /home/ty/ser486/finp/spi.h
+
+1607149811 /home/ty/ser486/finp/uart.h
+
+1607149811 /home/ty/ser486/finp/vpd.h
+
+1607149811 /home/ty/ser486/finp/temp.h
+
+1607149811 /home/ty/ser486/finp/socket.h
+
+1607149811 /home/ty/ser486/finp/alarm.h
+
+1607149811 /home/ty/ser486/finp/wdt.h
+
+1607149811 /home/ty/ser486/finp/tempfsm.h
+
+1607149811 /home/ty/ser486/finp/eeprom.h
+
+1607149811 /home/ty/ser486/finp/ntp.h
+
+1607149811 /home/ty/ser486/finp/w51.h
+
+1607149811 /home/ty/ser486/finp/signature.h
+

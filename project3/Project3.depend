@@ -1,0 +1,66 @@
+# depslib dependency file v1.0
+1606522417 source:/home/ty/ser486/project3/main.c
+	"alarm.h"
+	"config.h"
+	"delay.h"
+	"eeprom.h"
+	"led.h"
+	"log.h"
+	"rtc.h"
+	"temp.h"
+	"tempfsm.h"
+	"uart.h"
+	"uartsocket.h"
+	"util.h"
+	"process_packet.h"
+	"vpd.h"
+	"wdt.h"
+
+1606522417 /home/ty/ser486/project3/alarm.h
+
+1606522417 /home/ty/ser486/project3/config.h
+
+1606522417 /home/ty/ser486/project3/delay.h
+
+1606522417 /home/ty/ser486/project3/eeprom.h
+
+1606522417 /home/ty/ser486/project3/led.h
+
+1606522417 /home/ty/ser486/project3/log.h
+
+1606522417 /home/ty/ser486/project3/rtc.h
+
+1606522417 /home/ty/ser486/project3/temp.h
+
+1606522417 /home/ty/ser486/project3/tempfsm.h
+
+1606522417 /home/ty/ser486/project3/uart.h
+
+1606522417 /home/ty/ser486/project3/uartsocket.h
+
+1606522417 /home/ty/ser486/project3/util.h
+
+1606522417 /home/ty/ser486/project3/process_packet.h
+
+1606522417 /home/ty/ser486/project3/vpd.h
+
+1606522417 /home/ty/ser486/project3/wdt.h
+
+1606524486 source:/home/ty/ser486/project3/tempfsm.c
+	"alarm.h"
+	"led.h"
+	"log.h"
+	"tempfsm.h"
+
+1606522417 source:/home/ty/ser486/project3/util.c
+	"config.h"
+	"process_packet.h"
+	"util.h"
+
+1606536038 source:/home/ty/ser486/project3/wdt.c
+	"config.h"
+	"led.h"
+	"log.h"
+	"wdt.h"
+	"uart.h"
+

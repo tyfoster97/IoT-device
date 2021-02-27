@@ -1,0 +1,48 @@
+# depslib dependency file v1.0
+1605934395 source:/home/ty/ser486/project2/config.c
+	"config.h"
+	"eeprom.h"
+	"util.h"
+
+1605932578 /home/ty/ser486/project2/config.h
+
+1605932578 /home/ty/ser486/project2/eeprom.h
+
+1605922403 /home/ty/ser486/project2/util.h
+
+1605932928 source:/home/ty/ser486/project2/eeprom.c
+	"eeprom.h"
+
+1605932578 source:/home/ty/ser486/project2/main.c
+	"config.h"
+	"delay.h"
+	"eeprom.h"
+	"led.h"
+	"log.h"
+	"rtc.h"
+	"timer1.h"
+	"uart.h"
+	"util.h"
+	"vpd.h"
+
+1605922403 /home/ty/ser486/project2/delay.h
+
+1605922403 /home/ty/ser486/project2/led.h
+
+1605922403 /home/ty/ser486/project2/log.h
+
+1605922403 /home/ty/ser486/project2/rtc.h
+
+1605922403 /home/ty/ser486/project2/timer1.h
+
+1605922403 /home/ty/ser486/project2/uart.h
+
+1605932578 /home/ty/ser486/project2/vpd.h
+
+1605932578 source:/home/ty/ser486/project2/util.c
+
+1605934343 source:/home/ty/ser486/project2/vpd.c
+	"eeprom.h"
+	"util.h"
+	"vpd.h"
+
